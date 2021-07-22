@@ -78,7 +78,10 @@ let g:jedi#popup_on_dot = 0
 autocmd FileType python setlocal completeopt-=preview
 let g:jedi#use_tabs_not_buffers = 1
 
+" set up ruller
 set colorcolumn=100
+highlight ColorColumn ctermbg=0 guibg=lightgrey
+
 let g:jedi#show_call_signatures = 0
 
 set clipboard=unnamedplus
