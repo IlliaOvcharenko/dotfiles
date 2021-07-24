@@ -1,47 +1,49 @@
-set nocompatible              " required
-filetype off                  " required
+"--------------------------------------------------------------------------------------------------
+" Plugins set-up
 
-" set the runtime path to include Vundle and initialize
+set nocompatible         
+filetype off            
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
-
-" add all your plugins here (note older versions of Vundle
-" used Bundle instead of Plugin)
 
 Plugin 'preservim/nerdtree'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'Vimjas/vim-python-pep8-indent'
-"Plugin 'vim-airline/vim-airline'
-"Plugin 'vim-airline/vim-airline-themes'
 Plugin 'sheerun/vim-polyglot'
 Bundle 'sonph/onehalf', {'rtp': 'vim/'}
-Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
+Plugin 'itchyny/lightline.vim'
+Plugin 'junegunn/goyo.vim'
+
+"Plugin 'nathanaelkane/vim-indent-guides'
 "Plugin 'psliwka/vim-smoothie'
 "Plugin  'ojroques/vim-oscyank'
 "Plugin 'kyazdani42/nvim-web-devicons'
 "Plugin 'romgrk/barbar.nvim'
-Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plugin 'junegunn/fzf.vim'
-
-Plugin 'itchyny/lightline.vim'
-Plugin 'junegunn/goyo.vim'
+"Plugin 'vim-airline/vim-airline'
+"Plugin 'vim-airline/vim-airline-themes'
 " ...
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+call vundle#end()           
+filetype plugin indent on 
+
+"--------------------------------------------------------------------------------------------------
 
 
-" GENERAL SETTINGS
+
+
+"--------------------------------------------------------------------------------------------------
+" General editor settings
 
 " enable syntax highlighting
 " syntax enable
+let g:python_highlight_all = 1
+syntax on
+set t_Co=256
 
 " show line numbers
 "set number
@@ -67,60 +69,114 @@ set shiftwidth=4
 " show the matching part of the pair for [] {} and ()
 "set showmatch
 
+" highlight search 
+set hlsearch
+
+" always show tabline
+set showtabline=2
+
+" set up ruller
+set colorcolumn=100
+highlight ColorColumn ctermbg=0 guibg=lightgrey
+
+" enable block cursor
+set guicursor=
+
+" enable colors
+set termguicolors
+
+" TODO clipboard setup
+"set clipboard=unnamedplus
+"autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | OSCYankReg " | endif
+
+" TODO tabline setup
+"let bufferline = get(g:, 'bufferline', {})
+"let bufferline.icons = v:false
+"let bufferline.closable = v:false
+
+"--------------------------------------------------------------------------------------------------
+
+
+
+
+"--------------------------------------------------------------------------------------------------
+" NerdTree settings
 
 map <F3> :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
 autocmd BufWinEnter * silent NERDTreeMirror
 let NERDTreeWinSize=20
 
+"--------------------------------------------------------------------------------------------------
 
-syntax on
-set t_Co=256
-"set cursorline
-colorscheme onehalfdark
-"let g:airline_theme='onehalfdark'
-let g:lightline = {
-\ 'colorscheme': 'one',
-\ }
-function! LightlineMode()
-  return expand('%:t') ==# 'NERD_tree' ? 'NERD':
-        \ lightline#mode()
-endfunction
-let g:python_highlight_all = 1
 
-"let g:indent_guides_enable_on_vim_startup = 1
+
+
+"--------------------------------------------------------------------------------------------------
+" Jedi settings
+
+" Jedi use current conda env
 let $VIRTUAL_ENV = $CONDA_PREFIX
 
 let g:jedi#popup_on_dot = 0
 autocmd FileType python setlocal completeopt-=preview
 let g:jedi#use_tabs_not_buffers = 1
-
-" set up ruller
-set colorcolumn=100
-highlight ColorColumn ctermbg=0 guibg=lightgrey
-
 let g:jedi#show_call_signatures = 0
 
-set clipboard=unnamedplus
-
-"autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | OSCYankReg " | endif
-
-"let bufferline = get(g:, 'bufferline', {})
-"let bufferline.icons = v:false
-"let bufferline.closable = v:false
+"--------------------------------------------------------------------------------------------------
 
 
-set guicursor=
-set termguicolors
-"set background=light
-"set t_Co=256
 
-
-" hide tildas 
-" highlight EndOfBuffer ctermfg=black ctermbg=green
-"highlight NonText ctermfg=90
-"highlight EndOfBuffer ctermfg=bg
-
+"--------------------------------------------------------------------------------------------------
+"  FZF settings
 
 map ; :Files<CR>
 let g:fzf_layout = { 'down': '~40%' }
+
+"--------------------------------------------------------------------------------------------------
+
+
+
+
+"--------------------------------------------------------------------------------------------------
+" Theme
+
+colorscheme onehalfdark
+
+"--------------------------------------------------------------------------------------------------
+
+
+
+
+"--------------------------------------------------------------------------------------------------
+" Statusline
+
+" Airline
+"let g:airline_theme='onehalfdark'
+
+" Lightline
+let g:lightline = {
+    \ 'colorscheme': 'wombat',
+    \ }
+set laststatus=2
+function! MyLightLinePercent()
+  if &ft !=? 'nerdtree'
+    return line('.') * 100 / line('$') . '%'
+  else
+    return ''
+  endif
+endfunction
+function! MyLightLineLineInfo()
+  if &ft !=? 'nerdtree'
+    return line('.').':'. col('.')
+  else
+    return ''
+  endif
+endfunction
+let g:lightline.component_function = {
+    \ 'percent': 'MyLightLinePercent',
+    \ 'lineinfo': 'MyLightLineLineInfo'
+    \ } 
+
+"--------------------------------------------------------------------------------------------------
+
