@@ -17,13 +17,20 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'preservim/nerdtree'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'Vimjas/vim-python-pep8-indent'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+"Plugin 'vim-airline/vim-airline'
+"Plugin 'vim-airline/vim-airline-themes'
 Plugin 'sheerun/vim-polyglot'
 Bundle 'sonph/onehalf', {'rtp': 'vim/'}
 Plugin 'nathanaelkane/vim-indent-guides'
 "Plugin 'psliwka/vim-smoothie'
 "Plugin  'ojroques/vim-oscyank'
+"Plugin 'kyazdani42/nvim-web-devicons'
+"Plugin 'romgrk/barbar.nvim'
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
+
+Plugin 'itchyny/lightline.vim'
+Plugin 'junegunn/goyo.vim'
 " ...
 
 " All of your Plugins must be added before the following line
@@ -37,7 +44,10 @@ filetype plugin indent on    " required
 " syntax enable
 
 " show line numbers
-set number
+"set number
+set number relativenumber
+set nu rnu
+
 
 " set tabs to have 4 spaces
 set ts=4
@@ -52,10 +62,10 @@ set expandtab
 set shiftwidth=4
 
 " show a visual line under the cursor's current line
-" set cursorline
+"set cursorline
 
 " show the matching part of the pair for [] {} and ()
-" set showmatch
+"set showmatch
 
 
 map <F3> :NERDTreeToggle<CR>
@@ -67,8 +77,15 @@ let NERDTreeWinSize=20
 syntax on
 set t_Co=256
 "set cursorline
-"colorscheme onehalflight
+colorscheme onehalfdark
 "let g:airline_theme='onehalfdark'
+let g:lightline = {
+\ 'colorscheme': 'one',
+\ }
+function! LightlineMode()
+  return expand('%:t') ==# 'NERD_tree' ? 'NERD':
+        \ lightline#mode()
+endfunction
 let g:python_highlight_all = 1
 
 "let g:indent_guides_enable_on_vim_startup = 1
@@ -87,3 +104,23 @@ let g:jedi#show_call_signatures = 0
 set clipboard=unnamedplus
 
 "autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | OSCYankReg " | endif
+
+"let bufferline = get(g:, 'bufferline', {})
+"let bufferline.icons = v:false
+"let bufferline.closable = v:false
+
+
+set guicursor=
+set termguicolors
+"set background=light
+"set t_Co=256
+
+
+" hide tildas 
+" highlight EndOfBuffer ctermfg=black ctermbg=green
+"highlight NonText ctermfg=90
+"highlight EndOfBuffer ctermfg=bg
+
+
+map ; :Files<CR>
+let g:fzf_layout = { 'down': '~40%' }
