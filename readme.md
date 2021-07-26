@@ -1,1 +1,1 @@
-# 👾 Weird Dotfiles by Illia
+# 👾 weird dotfiles 
