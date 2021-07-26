@@ -72,6 +72,10 @@ set shiftwidth=4
 " highlight search 
 set hlsearch
 
+" ignore case during search
+set ignorecase
+
+
 " always show tabline
 set showtabline=2
 
@@ -84,6 +88,13 @@ set guicursor=
 
 " enable colors
 set termguicolors
+
+set lcs+=space:·
+set nolist
+
+" langmap for ukrainian lang
+set langmap=ФИСВУАПРШОЛДЬТЩЗЙКІЫЕГМЦЧНЯЖЮХЇфисвуапршолдьтщзйкыіегмцчняжюхї;ABCDEFGHIJKLMNOPQRSSTUVWXYZ:>{}abcdefghijklmnopqrsstuvwxyz\;.[]
+
 
 " TODO clipboard setup
 "set clipboard=unnamedplus
