@@ -96,10 +96,9 @@ set nolist
 " langmap for ukrainian lang
 set langmap=ФИСВУАПРШОЛДЬТЩЗЙКІЫЕГМЦЧНЯЖЮХЇфисвуапршолдьтщзйкыіегмцчняжюхї;ABCDEFGHIJKLMNOPQRSSTUVWXYZ:>{}abcdefghijklmnopqrsstuvwxyz\;.[]
 
-
-" TODO clipboard setup
-"set clipboard=unnamedplus
-"autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | OSCYankReg " | endif
+" bindings for system clipboard, vim should be compiled with +clipboard (install gvim to get it)
+vmap <C-c> "+y
+map <C-v> "+p
 
 " TODO tabline setup
 "let bufferline = get(g:, 'bufferline', {})
