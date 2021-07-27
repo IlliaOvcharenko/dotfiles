@@ -1,14 +1,13 @@
 "--------------------------------------------------------------------------------------------------
 " Plugins set-up
 
-set nocompatible         
-filetype off            
+set nocompatible
+filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
-
 Plugin 'preservim/nerdtree'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'Vimjas/vim-python-pep8-indent'
@@ -29,8 +28,8 @@ Plugin 'tpope/vim-commentary'
 "Plugin 'vim-airline/vim-airline-themes'
 " ...
 
-call vundle#end()           
-filetype plugin indent on 
+call vundle#end()
+filetype plugin indent on
 
 "--------------------------------------------------------------------------------------------------
 
@@ -51,7 +50,6 @@ set t_Co=256
 set number relativenumber
 set nu rnu
 
-
 " set tabs to have 4 spaces
 set ts=4
 
@@ -70,7 +68,7 @@ set shiftwidth=4
 " show the matching part of the pair for [] {} and ()
 "set showmatch
 
-" highlight search 
+" highlight search
 set hlsearch
 set incsearch
 
@@ -91,14 +89,11 @@ set guicursor=
 " enable colors
 set termguicolors
 
-set lcs+=space:·
-set nolist
-
 " langmap for ukrainian lang
 set langmap=ФИСВУАПРШОЛДЬТЩЗЙКІЫЕГМЦЧНЯЖЮХЇфисвуапршолдьтщзйкыіегмцчняжюхї;ABCDEFGHIJKLMNOPQRSSTUVWXYZ:>{}abcdefghijklmnopqrsstuvwxyz\;.[]
 
 " bindings for system clipboard, vim should be compiled with +clipboard (install gvim to get it)
-" TODO fix with ssh 
+" TODO fix with ssh
 vmap <C-c> "+y
 map <C-v> "+p
 
@@ -114,7 +109,7 @@ command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 command! Wqa :wqa<cr>
 
 " set buffers hidden by default
-set hidden 
+set hidden
 
 " TODO tabline setup
 "let bufferline = get(g:, 'bufferline', {})
@@ -169,6 +164,12 @@ let g:fzf_layout = { 'down': '~40%' }
 " Theme
 
 colorscheme onehalfdark
+
+" Set indents visible
+" set lcs+=space:·
+set list
+hi SpecialKey guifg=lightred
+
 
 "--------------------------------------------------------------------------------------------------
 
