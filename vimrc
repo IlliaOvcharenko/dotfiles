@@ -107,6 +107,11 @@ vmap <C-_> gc
 nmap <C-_> <S-v>gc
 imap <C-_> <Esc><S-v>gci
 
+" set W command to save with sudo
+command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+
+
+
 " TODO tabline setup
 "let bufferline = get(g:, 'bufferline', {})
 "let bufferline.icons = v:false
