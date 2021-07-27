@@ -18,6 +18,7 @@ Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plugin 'junegunn/fzf.vim'
 Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/goyo.vim'
+Plugin 'tpope/vim-commentary'
 
 "Plugin 'nathanaelkane/vim-indent-guides'
 "Plugin 'psliwka/vim-smoothie'
@@ -100,6 +101,11 @@ set langmap=ФИСВУАПРШОЛДЬТЩЗЙКІЫЕГМЦЧНЯЖЮХЇфис
 " TODO fix with ssh 
 vmap <C-c> "+y
 map <C-v> "+p
+
+" bindigs for code commenting
+vmap <C-_> gc
+nmap <C-_> <S-v>gc
+imap <C-_> <Esc><S-v>gci
 
 " TODO tabline setup
 "let bufferline = get(g:, 'bufferline', {})
