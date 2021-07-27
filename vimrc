@@ -110,6 +110,9 @@ imap <C-_> <Esc><S-v>gci
 " set W command to save with sudo
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
+" add command allias (always hit the shift during save)
+command! Wqa :wqa<cr>
+
 " set buffers hidden by default
 set hidden 
 
