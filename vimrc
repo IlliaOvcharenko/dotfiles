@@ -97,6 +97,7 @@ set nolist
 set langmap=ФИСВУАПРШОЛДЬТЩЗЙКІЫЕГМЦЧНЯЖЮХЇфисвуапршолдьтщзйкыіегмцчняжюхї;ABCDEFGHIJKLMNOPQRSSTUVWXYZ:>{}abcdefghijklmnopqrsstuvwxyz\;.[]
 
 " bindings for system clipboard, vim should be compiled with +clipboard (install gvim to get it)
+" TODO fix with ssh 
 vmap <C-c> "+y
 map <C-v> "+p
 
