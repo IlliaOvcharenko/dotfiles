@@ -71,6 +71,7 @@ set shiftwidth=4
 
 " highlight search 
 set hlsearch
+set incsearch
 
 " ignore case during search
 set ignorecase
