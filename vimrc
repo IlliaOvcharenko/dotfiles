@@ -110,7 +110,8 @@ imap <C-_> <Esc><S-v>gci
 " set W command to save with sudo
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
-
+" set buffers hidden by default
+set hidden 
 
 " TODO tabline setup
 "let bufferline = get(g:, 'bufferline', {})
