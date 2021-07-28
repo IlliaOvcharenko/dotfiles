@@ -111,6 +111,17 @@ command! Wqa :wqa<cr>
 " set buffers hidden by default
 set hidden
 
+" binding to repeat last command in tmux window
+function TmuxPaneRepeat()
+    write
+    silent execute ':!tmux send-keys -t top-right Up  Enter'
+    redraw!
+endfunction
+
+nmap <C-r> :call TmuxPaneRepeat()<cr>
+imap <C-r> <C-O>:call TmuxPaneRepeat()<cr>
+
+
 " TODO tabline setup
 "let bufferline = get(g:, 'bufferline', {})
 "let bufferline.icons = v:false
