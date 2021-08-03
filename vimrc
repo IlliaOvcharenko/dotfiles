@@ -118,8 +118,8 @@ function TmuxPaneRepeat()
     redraw!
 endfunction
 
-nmap <C-r> :call TmuxPaneRepeat()<cr>
-imap <C-r> <C-O>:call TmuxPaneRepeat()<cr>
+nmap <C-p> :call TmuxPaneRepeat()<cr>
+imap <C-p> <C-O>:call TmuxPaneRepeat()<cr>
 
 
 " TODO tabline setup
