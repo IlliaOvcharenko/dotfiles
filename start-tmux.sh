@@ -22,6 +22,7 @@ if [ $? != 0 ]; then
     tmux send-keys -t "$sesson:1.3" C-l
 
     tmux send-keys -t "$sesson:1.1" "vim" C-m
+    tmux select-pane -t "$sesson:1.1"
 fi
 
 tmux a -t $session
