@@ -5,6 +5,7 @@
 alias wnsmi="watch -n 0.5 nvidia-smi"
 alias gowork="cd ~/work/intetics"
 alias duhere="du -h -d 1"
+alias sduhere="sudo du -h -d 1"
 
 #--------------------------------------------------------------------------------------------------
 
