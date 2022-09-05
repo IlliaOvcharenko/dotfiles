@@ -9,6 +9,7 @@
   - [git submodule update --init --recursive, Installing submodules]
 
 - link:
+    ~/.config/nvim: nvim
     ~/.vim: vim
     ~/.vimrc: vimrc
     ~/.tmux.conf: tmux.conf
