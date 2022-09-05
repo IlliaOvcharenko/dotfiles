@@ -30,6 +30,9 @@ packer.startup(function(use)
     use { "junegunn/fzf", run = ":call fzf#install()" }
     use { "junegunn/fzf.vim" }
 
+    use { "Vimjas/vim-python-pep8-indent" }
     use { "tpope/vim-commentary" }
+    use { "sheerun/vim-polyglot" }
+    use { "davidhalter/jedi-vim" }
 
 end)
