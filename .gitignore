@@ -3,11 +3,11 @@ nvim/plugin/packer_compiled.lua
 
 
 # Vim Bundle folder
-vim/bundle/*
+vim/vim/bundle/*
 
 # Vim swap files
-vim/*.swp
-vim/*.swo
-vim/.netrwhist
+vim/vim/*.swp
+vim/vim/*.swo
+vim/vim/.netrwhist
 
 
