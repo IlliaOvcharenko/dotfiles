@@ -2,3 +2,8 @@
 nvim/plugin/packer_compiled.lua
 
 
+# Vim Bundle folder
+vim/bundle/*
+
+
+
