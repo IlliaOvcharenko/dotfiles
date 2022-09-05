@@ -5,5 +5,9 @@ nvim/plugin/packer_compiled.lua
 # Vim Bundle folder
 vim/bundle/*
 
+# Vim swap files
+vim/*.swp
+vim/*.swo
+vim/.netrwhist
 
 
