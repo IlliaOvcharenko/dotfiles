@@ -27,8 +27,9 @@ packer.startup(function(use)
     }
     use { "itchyny/lightline.vim" }
 
-    use { 'junegunn/fzf', run = ":call fzf#install()" }
-    use { 'junegunn/fzf.vim' }
+    use { "junegunn/fzf", run = ":call fzf#install()" }
+    use { "junegunn/fzf.vim" }
 
+    use { "tpope/vim-commentary" }
 
 end)

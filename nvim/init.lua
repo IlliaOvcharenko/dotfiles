@@ -48,6 +48,10 @@ map("n", "\\", ":Ag<CR>", { silent = true, noremap = true })
 -- map("n", "<leader>;", ":Files<CR>", { silent = true, noremap = true })
 -- map("n", "<leader>\\", ":Ag<CR>", { silent = true, noremap = true })
 
+map("v", "<C-/>", ":Commentary<CR>", { silent = true, noremap = true })
+map("n", "<C-/>", "<S-v>:Commentary<CR>", { silent = true, noremap = true })
+map("i", "<C-/>", "<Esc><S-v>:Commentary<CR>i", { silent = true, noremap = true })
+
 vim.cmd("set noshowmode")
 
 vim.cmd [[

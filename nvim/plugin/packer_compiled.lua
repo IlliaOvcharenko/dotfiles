@@ -99,6 +99,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/iovcharenko/.local/share/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
+  },
+  ["vim-commentary"] = {
+    loaded = true,
+    path = "/Users/iovcharenko/.local/share/nvim/site/pack/packer/start/vim-commentary",
+    url = "https://github.com/tpope/vim-commentary"
   }
 }
 
