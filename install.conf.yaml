@@ -14,8 +14,8 @@
     ~/.vimrc: vim/vimrc
     ~/.tmux.conf: tmux/tmux.conf
     ~/.bash_aliases: bash/bash_aliases
-    ~/.local/bin/start-tmux: tmux/start-tmux.sh
-    ~/.local/bin/stop-tmux: tmux/stop-tmux.sh
+    # ~/.local/bin/start-tmux: tmux/start-tmux.sh
+    # ~/.local/bin/stop-tmux: tmux/stop-tmux.sh
 
 
 
