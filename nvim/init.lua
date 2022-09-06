@@ -106,3 +106,9 @@ g["jedi#popup_on_dot"] = 0
 
 map("i", "<c-space>", "<nop>", { silent = true, noremap = true })
 
+-- just not use those keys to navigete
+map("n", "<up>", "<nop>", { silent = true, noremap = true })
+map("n", "<down>", "<nop>", { silent = true, noremap = true })
+map("n", "<left>", "<nop>", { silent = true, noremap = true })
+map("n", "<right>", "<nop>", { silent = true, noremap = true })
+
