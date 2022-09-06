@@ -104,4 +104,5 @@ autocmd FileType python setlocal completeopt-=preview
 g["jedi#show_call_signatures"] = 0
 g["jedi#popup_on_dot"] = 0
 
+map("i", "<c-space>", "<nop>", { silent = true, noremap = true })
 
