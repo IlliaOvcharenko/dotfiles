@@ -77,6 +77,7 @@ let g:fzf_colors =
 
 -- TODO not working in NVim
 -- vim.api.nvim_create_user_command("W", [[execute 'w !sudo tee % > /dev/null' <bar> edit!]], {})
+vim.api.nvim_create_user_command("W", [[:w<CR>]], {})
 vim.api.nvim_create_user_command("Wqa", [[:wqa<CR>]], {})
 
 
