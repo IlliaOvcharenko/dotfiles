@@ -1,5 +1,11 @@
 require "plugins"
 
+local lspconfig = require('lspconfig')
+-- require'lspconfig'.pyright.setup{}
+lspconfig.pyright.setup{}
+lspconfig.clangd.setup{}
+
+
 local g = vim.g
 local o = vim.opt
 local map = vim.api.nvim_set_keymap
@@ -97,13 +103,36 @@ vim.cmd [[
 let $VIRTUAL_ENV = $CONDA_PREFIX
 ]]
 
-g["jedi#completions_command"] = "<C-p>"
--- g["jedi#use_tabs_not_buffers"] = 1
-vim.cmd [[
-autocmd FileType python setlocal completeopt-=preview
-]]
-g["jedi#show_call_signatures"] = 0
-g["jedi#popup_on_dot"] = 0
+-- g["jedi#completions_command"] = "<C-p>"
+-- -- g["jedi#use_tabs_not_buffers"] = 1
+-- vim.cmd [[
+-- autocmd FileType python setlocal completeopt-=preview
+-- ]]
+-- g["jedi#show_call_signatures"] = 0
+-- g["jedi#popup_on_dot"] = 0
+-- inoremap <C-Space> <C-x><C-o>
+
+-- lsp config
+vim.cmd("set completeopt-=preview")
+map("i", "<C-p>", "<C-x><C-o>", { noremap = true })
+map("n", "<leader>d", "<C-]>", { noremap = true })
+map("n", "<leader>r", "<Cmd>lua vim.lsp.buf.rename()<CR>", { noremap = true })
+map("n", "<leader>s", "<Cmd>lua vim.diagnostic.open_float()<CR>", { noremap = true })
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    client.server_capabilities.semanticTokensProvider = nil
+  end,
+});
+
+-- diable sign column for lsp diagnostic
+vim.diagnostic.config({
+  signs = false
+})
+map("n", "<leader>q", "<Cmd>lua vim.diagnostic.disable()<CR>", { noremap = true })
+map("n", "<leader>w", "<Cmd>lua vim.diagnostic.enable()<CR>", { noremap = true })
+
 
 map("i", "<c-space>", "<nop>", { silent = true, noremap = true })
 

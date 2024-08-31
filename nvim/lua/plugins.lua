@@ -33,6 +33,7 @@ packer.startup(function(use)
     use { "Vimjas/vim-python-pep8-indent" }
     use { "tpope/vim-commentary" }
     use { "sheerun/vim-polyglot" }
-    use { "davidhalter/jedi-vim" }
+    -- use { "davidhalter/jedi-vim" }
+    use { "neovim/nvim-lspconfig" }
 
 end)
