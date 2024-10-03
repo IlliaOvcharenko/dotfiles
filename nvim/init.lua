@@ -114,6 +114,7 @@ let $VIRTUAL_ENV = $CONDA_PREFIX
 
 -- lsp config
 vim.cmd("set completeopt-=preview")
+vim.cmd("set completeopt+=longest")
 map("i", "<C-p>", "<C-x><C-o>", { noremap = true })
 map("n", "<leader>d", "<C-]>", { noremap = true })
 map("n", "<leader>r", "<Cmd>lua vim.lsp.buf.rename()<CR>", { noremap = true })
