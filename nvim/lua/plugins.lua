@@ -23,7 +23,8 @@ packer.startup(function(use)
     use {
         "sonph/onehalf",
         rtp = "vim",
-        config = function() vim.cmd("colorscheme onehalfdark") end
+        -- config = function() vim.cmd("colorscheme onehalfdark") end
+        config = function() vim.cmd("colorscheme torte") end
     }
     use { "itchyny/lightline.vim" }
 
