@@ -143,3 +143,5 @@ map("n", "<down>", "<nop>", { silent = true, noremap = true })
 map("n", "<left>", "<nop>", { silent = true, noremap = true })
 map("n", "<right>", "<nop>", { silent = true, noremap = true })
 
+--do not twitch to begining of the line when type ::
+vim.cmd("set cino+=L0kk")
