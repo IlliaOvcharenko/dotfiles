@@ -43,4 +43,33 @@ packer.startup(function(use)
         config = function() vim.cmd("colorscheme moonfly") end
     }
 
+    use({
+        "iamcco/markdown-preview.nvim",
+        run = function() vim.fn["mkdp#util#install"]() end,
+    })
+
+    -- use {
+    --   "zbirenbaum/copilot.lua",
+    --   cmd = "Copilot",
+    --   event = "InsertEnter",
+    --   config = function()
+    --     require("copilot").setup({
+    --       suggestion = {
+    --         enabled = true,
+    --         auto_trigger = false,
+    --         trigger_on_accept = true,
+    --         keymap = {
+    --           accept = false,
+    --           next = false,
+    --           prev = false,
+    --           dismiss = false,
+    --           toggle_auto_trigger = false,
+    --         },
+    --       },
+    --       panel = { enabled = false },
+    --       nes = { enabled = false },
+    --     })
+    --   end,
+    -- }
+
 end)

@@ -1,9 +1,10 @@
 require "plugins"
 
-local lspconfig = require('lspconfig')
--- require'lspconfig'.pyright.setup{}
-lspconfig.pyright.setup{}
-lspconfig.clangd.setup{}
+vim.lsp.config('pyright', {})
+vim.lsp.enable('pyright')
+
+vim.lsp.config('clangd', {})
+vim.lsp.enable('clangd')
 
 
 local g = vim.g
@@ -114,8 +115,12 @@ let $VIRTUAL_ENV = $CONDA_PREFIX
 
 -- lsp config
 vim.cmd("set completeopt-=preview")
-vim.cmd("set completeopt+=longest")
+vim.cmd("set completeopt-=longest")
+vim.cmd("set completeopt+=menu")
+vim.cmd("set completeopt+=menuone")
+vim.cmd("set completeopt+=noselect")
 map("i", "<C-p>", "<C-x><C-o>", { noremap = true })
+map("i", "<C-g>", "<Cmd>lua vim.lsp.buf.signature_help()<CR>", { noremap = true })
 map("n", "<leader>d", "<C-]>", { noremap = true })
 map("n", "<leader>r", "<Cmd>lua vim.lsp.buf.rename()<CR>", { noremap = true })
 map("n", "<leader>s", "<Cmd>lua vim.diagnostic.open_float()<CR>", { noremap = true })
@@ -123,9 +128,22 @@ map("n", "<leader>s", "<Cmd>lua vim.diagnostic.open_float()<CR>", { noremap = tr
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
-    client.server_capabilities.semanticTokensProvider = nil
+    if client then
+      client.server_capabilities.semanticTokensProvider = nil
+    end
+
+    -- Before 11.6 version it was
+    -- client.server_capabilities.semanticTokensProvider = nil
+
+    -- vim.bo[args.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
   end,
 });
+
+-- -- copilot config
+-- map("i", "<C-h>", "<Cmd>Copilot suggestion accept<CR>", { silent = true, noremap = true })
+-- map("i", "<C-j>", "<Cmd>Copilot suggestion next<CR>", { silent = true, noremap = true })
+-- map("i", "<C-k>", "<Cmd>Copilot suggestion prev<CR>", { silent = true, noremap = true })
+-- map("i", "<C-l>", "<Cmd>Copilot suggestion dismiss<CR>", { silent = true, noremap = true })
 
 -- diable sign column for lsp diagnostic
 vim.diagnostic.config({
