@@ -17,8 +17,31 @@
     ~/.bashrc: bash/bashrc
     ~/.bash_profile: bash/bash_profile
     ~/.config/ranger/rc.conf: ranger/rc.conf
+    "~/Library/Application Support/Sublime Text/Packages/User/Preferences.sublime-settings":
+      path: sublime/User/Preferences.sublime-settings
+      create: true
+      if: '[ "$(uname)" = "Darwin" ]'
+    "~/Library/Application Support/Sublime Text/Packages/User/Package Control.sublime-settings":
+      path: sublime/User/Package Control.sublime-settings
+      create: true
+      if: '[ "$(uname)" = "Darwin" ]'
+    "~/Library/Application Support/Sublime Text/Packages/User/Plain text.sublime-settings":
+      path: sublime/User/Plain text.sublime-settings
+      create: true
+      if: '[ "$(uname)" = "Darwin" ]'
+    ~/.config/sublime-text/Packages/User/Preferences.sublime-settings:
+      path: sublime/User/Preferences.sublime-settings
+      create: true
+      if: '[ "$(uname)" = "Linux" ]'
+    ~/.config/sublime-text/Packages/User/Package Control.sublime-settings:
+      path: sublime/User/Package Control.sublime-settings
+      create: true
+      if: '[ "$(uname)" = "Linux" ]'
+    ~/.config/sublime-text/Packages/User/Plain text.sublime-settings:
+      path: sublime/User/Plain text.sublime-settings
+      create: true
+      if: '[ "$(uname)" = "Linux" ]'
     # ~/.local/bin/start-tmux: tmux/start-tmux.sh
     # ~/.local/bin/stop-tmux: tmux/stop-tmux.sh
-
 
 

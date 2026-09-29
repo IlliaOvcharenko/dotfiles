@@ -1,0 +1,20 @@
+// Settings in here override those in "Default/Preferences.sublime-settings",
+// and are overridden in turn by syntax-specific settings.
+{
+    "font_face": "Consolas Bold",
+    "font_size": 16,
+
+
+    "tab_size": 4,
+    "translate_tabs_to_spaces": true,
+    "draw_white_space": ["all"],
+
+
+    "ignored_packages":
+    [
+    ],
+    "index_files": true,
+
+    "theme": "Default Dark.sublime-theme",
+    "color_scheme": "GitHub Dimmed.sublime-color-scheme",
+}
