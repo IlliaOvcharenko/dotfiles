@@ -1,0 +1,31 @@
+# Copy this file to ~/.bashrc.local and customize it for each laptop.
+# Dotbot intentionally does not manage that destination.
+
+export WORK_ROOT="${WORK_ROOT:-$HOME/work}"
+
+gowork() {
+    cd "$WORK_ROOT" || return
+}
+
+
+# Add non-standard, machine-specific tools when needed:
+# path_prepend "$HOME/path/to/tool/bin"
+
+# # Keep the current Homebrew Node version available when it is installed.
+# if [ -n "${NODE_HOME:-}" ]; then
+#     path_prepend "$NODE_HOME/bin"
+# elif [ -n "${HOMEBREW_PREFIX:-}" ]; then
+#     path_prepend "$HOMEBREW_PREFIX/opt/node@24/bin"
+# fi
+
+# sublime_bin="${SUBLIME_BIN:-/Applications/Sublime Text.app/Contents/SharedSupport/bin}"
+# path_prepend "$sublime_bin"
+# unset sublime_bin
+
+# # fzf emits the completion and key-binding setup for the installed version.
+# if command -v fzf >/dev/null 2>&1; then
+#     if fzf_setup="$(fzf --bash 2>/dev/null)"; then
+#         eval "$fzf_setup"
+#     fi
+#     unset fzf_setup
+# fi

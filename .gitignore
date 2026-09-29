@@ -1,3 +1,7 @@
+
+# Apple
+.DS_Store
+
 # NVim Packer compiled
 nvim/plugin/packer_compiled.lua
 

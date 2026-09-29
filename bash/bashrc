@@ -1,49 +1,18 @@
+# Only configure interactive shells.
+case $- in
+    *i*) ;;
+    *) return ;;
+esac
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+bashrc_fragment_dir="$HOME/.bashrc.d"
 
-eval "$(fzf --bash)"
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -d "$bashrc_fragment_dir" ]; then
+    for bashrc_fragment in "$bashrc_fragment_dir"/*.bash; do
+        [ -r "$bashrc_fragment" ] && . "$bashrc_fragment"
+    done
 fi
 
+unset bashrc_fragment bashrc_fragment_dir
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/iovcharenko/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/iovcharenko/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/iovcharenko/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/iovcharenko/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-source ~/.git-completion.bash
-export CLICOLOR=1
-export EDITOR=nvim
-export BASH_SILENCE_DEPRECATION_WARNING=1
-dprompt
-
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-
-export PATH="$HOME/.local/bin:$PATH"
-
-# NodeJS
-export PATH="/opt/homebrew/opt/node@24/bin:$PATH"
-# export LDFLAGS="-L/opt/homebrew/opt/node@24/lib"
-# export CPPFLAGS="-I/opt/homebrew/opt/node@24/include"
-
-
-# SublimeText
-export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
-
-# >>> geo-gremlin bash completion >>>
-if [ -f "$HOME/.geo-gremlin-completion.bash" ]; then
-    source "$HOME/.geo-gremlin-completion.bash"
-fi
-# <<< geo-gremlin bash completion <<<
+# Local configuration is intentionally not managed by Dotbot.
+[ -r "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"
