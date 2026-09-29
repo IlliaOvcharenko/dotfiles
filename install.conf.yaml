@@ -14,6 +14,9 @@
     ~/.vimrc: vim/vimrc
     ~/.tmux.conf: tmux/tmux.conf
     ~/.bash_aliases: bash/bash_aliases
+    ~/.bashrc: bash/bashrc
+    ~/.bash_profile: bash/bash_profile
+    ~/.config/ranger/rc.conf: ranger/rc.conf
     # ~/.local/bin/start-tmux: tmux/start-tmux.sh
     # ~/.local/bin/stop-tmux: tmux/stop-tmux.sh
 
