@@ -1,3 +1,12 @@
+-- Use the system clipboard for normal yank, delete, change, and put commands.
+-- On a direct SSH connection there is no local clipboard executable, so use
+-- OSC 52 to talk to the terminal on the client machine. Inside a remote tmux
+-- session, Nvim's tmux provider handles both directions instead.
+if vim.env.SSH_CONNECTION or vim.env.SSH_TTY then
+    vim.g.clipboard = vim.env.TMUX and "tmux" or "osc52"
+end
+vim.opt.clipboard = "unnamedplus"
+
 require "plugins"
 
 vim.lsp.config('pyright', {})
@@ -6,11 +15,11 @@ vim.lsp.enable('pyright')
 vim.lsp.config('clangd', {})
 vim.lsp.enable('clangd')
 
-
 local g = vim.g
 local o = vim.opt
 local map = vim.api.nvim_set_keymap
 
+o.shortmess:append("I")
 g.mapleader = "`"
 o.timeoutlen = 3000
 vim.cmd [[ let g:fzf_layout = { 'window': { 'width': 1.0, 'height': 0.5, 'relative': v:true, 'yoffset': 1.0 } } ]]
