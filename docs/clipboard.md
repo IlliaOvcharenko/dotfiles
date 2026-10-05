@@ -1,4 +1,10 @@
-## Remote Neovim clipboard
+## Clipboard behaviour
+Nvim clipboard are synced with system clipboard in alsmost every env:
+- just local nvim
+- local tmux + local nvim
+- local tmux + remote nvim
+
+### Note on Remote Neovim clipboard
 
 The clipboard bridge supports this usual setup:
 
