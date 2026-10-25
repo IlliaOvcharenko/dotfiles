@@ -83,6 +83,20 @@ map("n", "\\", ":Ag<CR>", { silent = true, noremap = true })
 -- map("n", "<leader>;", ":Files<CR>", { silent = true, noremap = true })
 -- map("n", "<leader>\\", ":Ag<CR>", { silent = true, noremap = true })
 
+-- Copy a file reference relative to Nvim's cwd, with a 1-based character column.
+vim.keymap.set("n", "<leader>yl", function()
+    local filename = vim.api.nvim_buf_get_name(0)
+    if filename == "" then
+        vim.notify("Cannot copy location: buffer has no filename", vim.log.levels.WARN)
+        return
+    end
+
+    local path = vim.fn.fnamemodify(filename, ":.")
+    local location = string.format("%s:%d:%d", path, vim.fn.line("."), vim.fn.charcol("."))
+    vim.fn.setreg("+", location, "v")
+    vim.notify("Copied: " .. location)
+end, { desc = "Yank file location to clipboard" })
+
 
 map("v", "<c-/>", ":Commentary<cr>", { silent = true, noremap = true })
 map("n", "<c-/>", "<s-v>:Commentary<cr>", { silent = true, noremap = true })
