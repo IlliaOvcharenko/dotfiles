@@ -7,6 +7,30 @@ if vim.env.SSH_CONNECTION or vim.env.SSH_TTY then
 end
 vim.opt.clipboard = "unnamedplus"
 
+-- Let ranger discover this editor through its tmux pane, even when the two
+-- programs were started independently. Refresh on entry for nested editors.
+if vim.env.TMUX and vim.env.TMUX_PANE then
+    local pane = vim.env.TMUX_PANE
+    local function register_tmux_server()
+        if vim.v.servername ~= "" then
+            vim.fn.system({ "tmux", "set-option", "-p", "-t", pane,
+                "@nvim_server", vim.v.servername })
+        end
+    end
+    vim.api.nvim_create_autocmd({ "VimEnter", "VimResume" }, {
+        callback = register_tmux_server,
+    })
+    vim.api.nvim_create_autocmd("VimLeavePre", {
+        callback = function()
+            local server = vim.fn.system({ "tmux", "show-options", "-pqv", "-t", pane,
+                "@nvim_server" }):gsub("\n$", "")
+            if server == vim.v.servername then
+                vim.fn.system({ "tmux", "set-option", "-pu", "-t", pane, "@nvim_server" })
+            end
+        end,
+    })
+end
+
 require "plugins"
 
 vim.lsp.config('pyright', {})

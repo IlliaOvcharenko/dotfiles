@@ -17,6 +17,9 @@
     ~/.bashrc: bash/bashrc
     ~/.bash_profile: bash/bash_profile
     ~/.config/ranger/rc.conf: ranger/rc.conf
+    ~/.config/ranger/plugins/nvim.py:
+      path: ranger/plugins/nvim.py
+      create: true
     "~/Library/Application Support/Sublime Text/Packages/User/Preferences.sublime-settings":
       path: sublime/User/Preferences.sublime-settings
       create: true
