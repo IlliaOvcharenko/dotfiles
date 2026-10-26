@@ -1,4 +1,4 @@
-# Bash configuration
+# Bash
 
 The Bash configuration is split into small, ordered fragments so the same
 dotfiles can be used on macOS and Linux. Optional tools are detected at shell
@@ -107,17 +107,5 @@ path_prepend "$HOME/path/to/tool/bin"
 Do not commit `~/.bashrc.local`, and do not store passwords, tokens, or private
 keys in it. Use it for paths and references to an appropriate secret store.
 
-## Installation
 
-From the repository root, run:
-
-```bash
-./install
-```
-
-Dotbot links the managed files into the home directory. Open a new shell after
-installation, or reload the current interactive shell:
-
-```bash
-source ~/.bashrc
-```
+Dotbot links the managed files into the home directory.
