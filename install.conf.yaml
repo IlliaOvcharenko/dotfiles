@@ -16,6 +16,18 @@
     ~/.bashrc.d: bash/bashrc.d
     ~/.bashrc: bash/bashrc
     ~/.bash_profile: bash/bash_profile
+    .pi/skills:
+      path: pi/dotfiles-skills
+      create: true
+    ~/.pi/agent/settings.json:
+      path: pi/agent/settings.json
+      create: true
+    ~/.pi/agent/web-search.json:
+      path: pi/agent/web-search.json
+      create: true
+    ~/.pi/agent/permission-mode/permission-mode.json:
+      path: pi/agent/permission-mode/permission-mode.json
+      create: true
     ~/.config/ranger/rc.conf: ranger/rc.conf
     ~/.config/ranger/plugins/nvim.py:
       path: ranger/plugins/nvim.py
