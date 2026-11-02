@@ -1,0 +1,20 @@
+{
+  "defaultProvider": "openai",
+  "defaultModel": "gpt-6.1-sol",
+  "defaultThinkingLevel": "medium",
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 64644,
+    "keepRecentTokens": 4000
+  },
+  "packages": [
+    "npm:pi-web-access",
+    "npm:pi-permission-modes"
+  ],
+  "tuiMode": "regular",
+  "lastChangelogVersion": "1.5.0",
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:pi-web-access\",\"scope\":\"user\"}": "0.46.0",
+    "{\"source\":\"npm:pi-permission-modes\",\"scope\":\"user\"}": "2.7.2"
+  }
+}
