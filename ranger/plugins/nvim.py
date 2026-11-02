@@ -119,8 +119,13 @@ def hook_init(fm):
         # choices from "open_with". Keep privileged opens on the normal path.
         for count, command, rule_label, rule_flags in fm.rifle.list_commands(files, mimetype):
             if (label and label == rule_label) or (not label and count == number):
-                if (command == '${VISUAL:-$EDITOR} -- "$@"'
-                        and "r" not in squash_flags(flags + rule_flags)):
+                editor_rule = command == '${VISUAL:-$EDITOR} -- "$@"'
+                # macOS's default open rule sends YAML to its GUI association.
+                yaml_open = (not label and number == 0
+                             and command == 'open -- "$@"' and files
+                             and all(os.path.splitext(path)[1].lower() in (".yaml", ".yml")
+                                     for path in files))
+                if (editor_rule or yaml_open) and "r" not in squash_flags(flags + rule_flags):
                     handled, error = open_in_nvim(files)
                     if error:
                         fm.notify(error, bad=True)

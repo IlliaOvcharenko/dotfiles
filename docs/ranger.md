@@ -4,7 +4,10 @@
 
 When ranger and Neovim run in the same tmux window, opening a
 text file with Right, Enter, or `l` opens it in the existing Neovim. The `E`
-command also uses this integration. 
+command also uses this integration.
+
+For `.yaml` and `.yml` files, Enter (or `l`/Right) opens them in the existing
+Neovim pane instead of their macOS-associated app.
 
 Focus stays in ranger without suspending or redrawing its interface.
 
