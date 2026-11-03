@@ -1,0 +1,13 @@
+{
+  "showLineNumber": false,
+  "vimMode": true,
+  "showIndentGuide": false,
+  "foldIndent": true,
+  "strictLineBreaks": false,
+  "livePreview": false,
+  "attachmentFolderPath": "./figs",
+  "alwaysUpdateLinks": true,
+  "useTab": false,
+  "tabSize": 2,
+  "defaultViewMode": "preview"
+}
