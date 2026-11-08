@@ -2,7 +2,12 @@
   "$schema": "https://raw.githubusercontent.com/wynainfo/pi-permission-modes/main/schemas/permission-mode.schema.json",
   "$comment": "Portable macOS/Linux candidate reviewed against pi-permission-modes 2.7.2. Practical containment, not a project-only read jail. $HOME/miniconda3 is a read-only toolchain exception; adjust narrowly for other installations. See PI-PERMISSIONS.md before installing.",
   "defaultMode": "plan",
-  "cycleOrder": ["plan", "approve-confirm", "approve", "build"],
+  "cycleOrder": [
+    "plan",
+    "approve-confirm",
+    "approve",
+    "build"
+  ],
   "modes": {
     "plan": {
       "label": "Plan",
@@ -11,38 +16,137 @@
       "injectSandboxInfo": true,
       "bypassProtectedPaths": false,
       "sandbox": {
-        "enabled": true, "writable": false,
-        "allowWrite": ["."], "denyWrite": [".git"],
-        "denyRead": ["$HOME", ".git", "$HOME/.ssh", "$HOME/.aws", "$HOME/.gnupg", "$HOME/.netrc", "$HOME/.git-credentials", "$HOME/.pypirc", "$HOME/.gem/credentials", "$HOME/.vault-token", "$HOME/.password-store", "$HOME/.pi/agent/auth.json", "$HOME/.pi/agent/oauth.json"],
-        "allowRead": [".", "$HOME/miniconda3"],
+        "enabled": true,
+        "writable": false,
+        "allowWrite": [
+          "."
+        ],
+        "denyWrite": [
+          ".git"
+        ],
+        "denyRead": [
+          "$HOME",
+          ".git",
+          "$HOME/.ssh",
+          "$HOME/.aws",
+          "$HOME/.gnupg",
+          "$HOME/.netrc",
+          "$HOME/.git-credentials",
+          "$HOME/.pypirc",
+          "$HOME/.gem/credentials",
+          "$HOME/.vault-token",
+          "$HOME/.password-store",
+          "$HOME/.pi/agent/auth.json",
+          "$HOME/.pi/agent/oauth.json"
+        ],
+        "allowRead": [
+          "."
+        ],
         "insideRoots": [],
-        "network": {"allowedDomains": [], "deniedDomains": []},
-        "askOnBlockedHost": true, "allowLocalBinding": false,
-        "macos": {"enableWeakerNetworkIsolation": false},
-        "linux": {"allowNestedUserNamespaces": false}
+        "network": {
+          "allowedDomains": [],
+          "deniedDomains": []
+        },
+        "askOnBlockedHost": true,
+        "allowLocalBinding": false,
+        "macos": {
+          "enableWeakerNetworkIsolation": false
+        },
+        "linux": {
+          "allowNestedUserNamespaces": false
+        }
       },
       "permission": {
-        "path": {"*": "allow", "**/.git": "deny", "**/.git/*": "deny", "**/.env": "deny", "**/.env.*": "deny"},
+        "path": {
+          "*": "allow",
+          "**/.git": "deny",
+          "**/.git/*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny"
+        },
         "external_directory": "ask",
-        "read": "allow", "grep": "allow", "find": "allow", "ls": "allow",
-        "write": {"*": "deny", "*.md": "allow", "*.markdown": "allow"},
-        "edit": {"*": "deny", "*.md": "allow", "*.markdown": "allow"},
+        "read": "allow",
+        "grep": "allow",
+        "find": "allow",
+        "ls": "allow",
+        "write": {
+          "*": "deny",
+          "*.md": "allow",
+          "*.markdown": "allow"
+        },
+        "edit": {
+          "*": "deny",
+          "*.md": "allow",
+          "*.markdown": "allow"
+        },
         "bash": {
           "*": "ask",
-          "rg": "allow", "rg *": "allow", "ls": "allow", "ls *": "allow", "pwd": "allow", "head": "allow",
-          "git*": "deny", "gh*": "deny",
-          "sudo*": "deny", "su": "deny", "su *": "deny", "doas*": "deny", "pkexec*": "deny",
-          "pip*": "deny", "* -m pip*": "deny", "* -m venv*": "deny", "virtualenv*": "deny",
-          "conda*": "deny", "mamba*": "deny", "micromamba*": "deny", "uv*": "deny", "poetry*": "deny", "pipenv*": "deny",
-          "brew*": "deny", "apt*": "deny", "apt-get*": "deny", "dnf*": "deny", "yum*": "deny", "pacman*": "deny", "port install*": "deny",
-          "npm install*": "deny", "npm i": "deny", "npm i *": "deny", "npm ci*": "deny", "npm update*": "deny", "npm uninstall*": "deny", "npm exec*": "deny", "npx*": "deny",
-          "pnpm add*": "deny", "pnpm install*": "deny", "pnpm update*": "deny", "pnpm remove*": "deny", "pnpm dlx*": "deny",
-          "yarn add*": "deny", "yarn install*": "deny", "yarn remove*": "deny", "yarn dlx*": "deny",
-          "docker*": "deny", "podman*": "deny", "ssh*": "deny", "scp*": "deny", "sftp*": "deny"
+          "rg": "allow",
+          "rg *": "allow",
+          "ls": "allow",
+          "ls *": "allow",
+          "pwd": "allow",
+          "head": "allow",
+          "git*": "deny",
+          "gh*": "deny",
+          "sudo*": "deny",
+          "su": "deny",
+          "su *": "deny",
+          "doas*": "deny",
+          "pkexec*": "deny",
+          "pip*": "deny",
+          "* -m pip*": "deny",
+          "* -m venv*": "deny",
+          "virtualenv*": "deny",
+          "conda*": "deny",
+          "mamba*": "deny",
+          "micromamba*": "deny",
+          "uv*": "deny",
+          "poetry*": "deny",
+          "pipenv*": "deny",
+          "brew*": "deny",
+          "apt*": "deny",
+          "apt-get*": "deny",
+          "dnf*": "deny",
+          "yum*": "deny",
+          "pacman*": "deny",
+          "port install*": "deny",
+          "npm install*": "deny",
+          "npm i": "deny",
+          "npm i *": "deny",
+          "npm ci*": "deny",
+          "npm update*": "deny",
+          "npm uninstall*": "deny",
+          "npm exec*": "deny",
+          "npx*": "deny",
+          "pnpm add*": "deny",
+          "pnpm install*": "deny",
+          "pnpm update*": "deny",
+          "pnpm remove*": "deny",
+          "pnpm dlx*": "deny",
+          "yarn add*": "deny",
+          "yarn install*": "deny",
+          "yarn remove*": "deny",
+          "yarn dlx*": "deny",
+          "docker*": "deny",
+          "podman*": "deny",
+          "ssh*": "deny",
+          "scp*": "deny",
+          "sftp*": "deny"
         },
-        "web_search": "ask", "tool": {"*": "ask", "web_enable": "allow", "tool_search": "allow"}, "skill": "allow"
+        "web_search": "ask",
+        "tool": {
+          "*": "ask",
+          "web_enable": "allow",
+          "tool_search": "allow"
+        },
+        "skill": "allow"
       },
-      "hideTools": ["show_plan", "powershell", "codemode"]
+      "hideTools": [
+        "show_plan",
+        "powershell",
+        "codemode"
+      ]
     },
     "approve-confirm": {
       "label": "ApproveConfirm",
@@ -51,36 +155,123 @@
       "injectSandboxInfo": true,
       "bypassProtectedPaths": false,
       "sandbox": {
-        "enabled": true, "writable": false,
-        "allowWrite": ["."], "denyWrite": [".git"],
-        "denyRead": ["$HOME", ".git", "$HOME/.ssh", "$HOME/.aws", "$HOME/.gnupg", "$HOME/.netrc", "$HOME/.git-credentials", "$HOME/.pypirc", "$HOME/.gem/credentials", "$HOME/.vault-token", "$HOME/.password-store", "$HOME/.pi/agent/auth.json", "$HOME/.pi/agent/oauth.json"],
-        "allowRead": [".", "$HOME/miniconda3"],
+        "enabled": true,
+        "writable": false,
+        "allowWrite": [
+          "."
+        ],
+        "denyWrite": [
+          ".git"
+        ],
+        "denyRead": [
+          "$HOME",
+          ".git",
+          "$HOME/.ssh",
+          "$HOME/.aws",
+          "$HOME/.gnupg",
+          "$HOME/.netrc",
+          "$HOME/.git-credentials",
+          "$HOME/.pypirc",
+          "$HOME/.gem/credentials",
+          "$HOME/.vault-token",
+          "$HOME/.password-store",
+          "$HOME/.pi/agent/auth.json",
+          "$HOME/.pi/agent/oauth.json"
+        ],
+        "allowRead": [
+          "."
+        ],
         "insideRoots": [],
-        "network": {"allowedDomains": [], "deniedDomains": []},
-        "askOnBlockedHost": true, "allowLocalBinding": false,
-        "macos": {"enableWeakerNetworkIsolation": false},
-        "linux": {"allowNestedUserNamespaces": false}
+        "network": {
+          "allowedDomains": [],
+          "deniedDomains": []
+        },
+        "askOnBlockedHost": true,
+        "allowLocalBinding": false,
+        "macos": {
+          "enableWeakerNetworkIsolation": false
+        },
+        "linux": {
+          "allowNestedUserNamespaces": false
+        }
       },
       "permission": {
-        "path": {"*": "allow", "**/.git": "deny", "**/.git/*": "deny", "**/.env": "deny", "**/.env.*": "deny"},
+        "path": {
+          "*": "allow",
+          "**/.git": "deny",
+          "**/.git/*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny"
+        },
         "external_directory": "ask",
-        "read": "allow", "grep": "allow", "find": "allow", "ls": "allow",
-        "write": "allow", "edit": "allow",
+        "read": "allow",
+        "grep": "allow",
+        "find": "allow",
+        "ls": "allow",
+        "write": "allow",
+        "edit": "allow",
         "bash": {
           "*": "ask",
-          "git*": "deny", "gh*": "deny",
-          "sudo*": "deny", "su": "deny", "su *": "deny", "doas*": "deny", "pkexec*": "deny",
-          "pip*": "deny", "* -m pip*": "deny", "* -m venv*": "deny", "virtualenv*": "deny",
-          "conda*": "deny", "mamba*": "deny", "micromamba*": "deny", "uv*": "deny", "poetry*": "deny", "pipenv*": "deny",
-          "brew*": "deny", "apt*": "deny", "apt-get*": "deny", "dnf*": "deny", "yum*": "deny", "pacman*": "deny", "port install*": "deny",
-          "npm install*": "deny", "npm i": "deny", "npm i *": "deny", "npm ci*": "deny", "npm update*": "deny", "npm uninstall*": "deny", "npm exec*": "deny", "npx*": "deny",
-          "pnpm add*": "deny", "pnpm install*": "deny", "pnpm update*": "deny", "pnpm remove*": "deny", "pnpm dlx*": "deny",
-          "yarn add*": "deny", "yarn install*": "deny", "yarn remove*": "deny", "yarn dlx*": "deny",
-          "docker*": "deny", "podman*": "deny", "ssh*": "deny", "scp*": "deny", "sftp*": "deny"
+          "git*": "deny",
+          "gh*": "deny",
+          "sudo*": "deny",
+          "su": "deny",
+          "su *": "deny",
+          "doas*": "deny",
+          "pkexec*": "deny",
+          "pip*": "deny",
+          "* -m pip*": "deny",
+          "* -m venv*": "deny",
+          "virtualenv*": "deny",
+          "conda*": "deny",
+          "mamba*": "deny",
+          "micromamba*": "deny",
+          "uv*": "deny",
+          "poetry*": "deny",
+          "pipenv*": "deny",
+          "brew*": "deny",
+          "apt*": "deny",
+          "apt-get*": "deny",
+          "dnf*": "deny",
+          "yum*": "deny",
+          "pacman*": "deny",
+          "port install*": "deny",
+          "npm install*": "deny",
+          "npm i": "deny",
+          "npm i *": "deny",
+          "npm ci*": "deny",
+          "npm update*": "deny",
+          "npm uninstall*": "deny",
+          "npm exec*": "deny",
+          "npx*": "deny",
+          "pnpm add*": "deny",
+          "pnpm install*": "deny",
+          "pnpm update*": "deny",
+          "pnpm remove*": "deny",
+          "pnpm dlx*": "deny",
+          "yarn add*": "deny",
+          "yarn install*": "deny",
+          "yarn remove*": "deny",
+          "yarn dlx*": "deny",
+          "docker*": "deny",
+          "podman*": "deny",
+          "ssh*": "deny",
+          "scp*": "deny",
+          "sftp*": "deny"
         },
-        "web_search": "ask", "tool": {"*": "ask", "web_enable": "allow", "tool_search": "allow"}, "skill": "allow"
+        "web_search": "ask",
+        "tool": {
+          "*": "ask",
+          "web_enable": "allow",
+          "tool_search": "allow"
+        },
+        "skill": "allow"
       },
-      "hideTools": ["show_plan", "powershell", "codemode"]
+      "hideTools": [
+        "show_plan",
+        "powershell",
+        "codemode"
+      ]
     },
     "approve": {
       "label": "Approve",
@@ -89,36 +280,123 @@
       "injectSandboxInfo": true,
       "bypassProtectedPaths": false,
       "sandbox": {
-        "enabled": true, "writable": true,
-        "allowWrite": ["."], "denyWrite": [".git"],
-        "denyRead": ["$HOME", ".git", "$HOME/.ssh", "$HOME/.aws", "$HOME/.gnupg", "$HOME/.netrc", "$HOME/.git-credentials", "$HOME/.pypirc", "$HOME/.gem/credentials", "$HOME/.vault-token", "$HOME/.password-store", "$HOME/.pi/agent/auth.json", "$HOME/.pi/agent/oauth.json"],
-        "allowRead": [".", "$HOME/miniconda3"],
+        "enabled": true,
+        "writable": true,
+        "allowWrite": [
+          "."
+        ],
+        "denyWrite": [
+          ".git"
+        ],
+        "denyRead": [
+          "$HOME",
+          ".git",
+          "$HOME/.ssh",
+          "$HOME/.aws",
+          "$HOME/.gnupg",
+          "$HOME/.netrc",
+          "$HOME/.git-credentials",
+          "$HOME/.pypirc",
+          "$HOME/.gem/credentials",
+          "$HOME/.vault-token",
+          "$HOME/.password-store",
+          "$HOME/.pi/agent/auth.json",
+          "$HOME/.pi/agent/oauth.json"
+        ],
+        "allowRead": [
+          "."
+        ],
         "insideRoots": [],
-        "network": {"allowedDomains": [], "deniedDomains": []},
-        "askOnBlockedHost": true, "allowLocalBinding": false,
-        "macos": {"enableWeakerNetworkIsolation": false},
-        "linux": {"allowNestedUserNamespaces": false}
+        "network": {
+          "allowedDomains": [],
+          "deniedDomains": []
+        },
+        "askOnBlockedHost": true,
+        "allowLocalBinding": false,
+        "macos": {
+          "enableWeakerNetworkIsolation": false
+        },
+        "linux": {
+          "allowNestedUserNamespaces": false
+        }
       },
       "permission": {
-        "path": {"*": "allow", "**/.git": "deny", "**/.git/*": "deny", "**/.env": "deny", "**/.env.*": "deny"},
+        "path": {
+          "*": "allow",
+          "**/.git": "deny",
+          "**/.git/*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny"
+        },
         "external_directory": "ask",
-        "read": "allow", "grep": "allow", "find": "allow", "ls": "allow",
-        "write": "allow", "edit": "allow",
+        "read": "allow",
+        "grep": "allow",
+        "find": "allow",
+        "ls": "allow",
+        "write": "allow",
+        "edit": "allow",
         "bash": {
           "*": "allow",
-          "git*": "deny", "gh*": "deny",
-          "sudo*": "deny", "su": "deny", "su *": "deny", "doas*": "deny", "pkexec*": "deny",
-          "pip*": "deny", "* -m pip*": "deny", "* -m venv*": "deny", "virtualenv*": "deny",
-          "conda*": "deny", "mamba*": "deny", "micromamba*": "deny", "uv*": "deny", "poetry*": "deny", "pipenv*": "deny",
-          "brew*": "deny", "apt*": "deny", "apt-get*": "deny", "dnf*": "deny", "yum*": "deny", "pacman*": "deny", "port install*": "deny",
-          "npm install*": "deny", "npm i": "deny", "npm i *": "deny", "npm ci*": "deny", "npm update*": "deny", "npm uninstall*": "deny", "npm exec*": "deny", "npx*": "deny",
-          "pnpm add*": "deny", "pnpm install*": "deny", "pnpm update*": "deny", "pnpm remove*": "deny", "pnpm dlx*": "deny",
-          "yarn add*": "deny", "yarn install*": "deny", "yarn remove*": "deny", "yarn dlx*": "deny",
-          "docker*": "deny", "podman*": "deny", "ssh*": "deny", "scp*": "deny", "sftp*": "deny"
+          "git*": "deny",
+          "gh*": "deny",
+          "sudo*": "deny",
+          "su": "deny",
+          "su *": "deny",
+          "doas*": "deny",
+          "pkexec*": "deny",
+          "pip*": "deny",
+          "* -m pip*": "deny",
+          "* -m venv*": "deny",
+          "virtualenv*": "deny",
+          "conda*": "deny",
+          "mamba*": "deny",
+          "micromamba*": "deny",
+          "uv*": "deny",
+          "poetry*": "deny",
+          "pipenv*": "deny",
+          "brew*": "deny",
+          "apt*": "deny",
+          "apt-get*": "deny",
+          "dnf*": "deny",
+          "yum*": "deny",
+          "pacman*": "deny",
+          "port install*": "deny",
+          "npm install*": "deny",
+          "npm i": "deny",
+          "npm i *": "deny",
+          "npm ci*": "deny",
+          "npm update*": "deny",
+          "npm uninstall*": "deny",
+          "npm exec*": "deny",
+          "npx*": "deny",
+          "pnpm add*": "deny",
+          "pnpm install*": "deny",
+          "pnpm update*": "deny",
+          "pnpm remove*": "deny",
+          "pnpm dlx*": "deny",
+          "yarn add*": "deny",
+          "yarn install*": "deny",
+          "yarn remove*": "deny",
+          "yarn dlx*": "deny",
+          "docker*": "deny",
+          "podman*": "deny",
+          "ssh*": "deny",
+          "scp*": "deny",
+          "sftp*": "deny"
         },
-        "web_search": "allow", "tool": {"*": "ask", "web_enable": "allow", "tool_search": "allow"}, "skill": "allow"
+        "web_search": "allow",
+        "tool": {
+          "*": "ask",
+          "web_enable": "allow",
+          "tool_search": "allow"
+        },
+        "skill": "allow"
       },
-      "hideTools": ["show_plan", "powershell", "codemode"]
+      "hideTools": [
+        "show_plan",
+        "powershell",
+        "codemode"
+      ]
     },
     "build": {
       "label": "Build",
@@ -127,36 +405,124 @@
       "injectSandboxInfo": true,
       "bypassProtectedPaths": false,
       "sandbox": {
-        "enabled": true, "writable": true,
-        "allowWrite": ["."], "denyWrite": [".git"],
-        "denyRead": ["$HOME", ".git", "$HOME/.ssh", "$HOME/.aws", "$HOME/.gnupg", "$HOME/.netrc", "$HOME/.git-credentials", "$HOME/.pypirc", "$HOME/.gem/credentials", "$HOME/.vault-token", "$HOME/.password-store", "$HOME/.pi/agent/auth.json", "$HOME/.pi/agent/oauth.json"],
-        "allowRead": [".", "$HOME/miniconda3"],
+        "enabled": true,
+        "writable": true,
+        "allowWrite": [
+          "."
+        ],
+        "denyWrite": [
+          ".git"
+        ],
+        "denyRead": [
+          "$HOME",
+          ".git",
+          "$HOME/.ssh",
+          "$HOME/.aws",
+          "$HOME/.gnupg",
+          "$HOME/.netrc",
+          "$HOME/.git-credentials",
+          "$HOME/.pypirc",
+          "$HOME/.gem/credentials",
+          "$HOME/.vault-token",
+          "$HOME/.password-store",
+          "$HOME/.pi/agent/auth.json",
+          "$HOME/.pi/agent/oauth.json"
+        ],
+        "allowRead": [
+          "."
+        ],
         "insideRoots": [],
-        "network": {"allowedDomains": [], "deniedDomains": []},
-        "askOnBlockedHost": true, "allowLocalBinding": false,
-        "macos": {"enableWeakerNetworkIsolation": false},
-        "linux": {"allowNestedUserNamespaces": false}
+        "network": {
+          "allowedDomains": [],
+          "deniedDomains": []
+        },
+        "askOnBlockedHost": true,
+        "allowLocalBinding": false,
+        "macos": {
+          "enableWeakerNetworkIsolation": false
+        },
+        "linux": {
+          "allowNestedUserNamespaces": false
+        }
       },
       "permission": {
-        "path": {"*": "allow", "**/.git": "deny", "**/.git/*": "deny", "**/.env": "deny", "**/.env.*": "deny"},
+        "path": {
+          "*": "allow",
+          "**/.git": "deny",
+          "**/.git/*": "deny",
+          "**/.env": "deny",
+          "**/.env.*": "deny"
+        },
         "external_directory": "ask",
-        "read": "allow", "grep": "allow", "find": "allow", "ls": "allow",
-        "write": "allow", "edit": "allow",
+        "read": "allow",
+        "grep": "allow",
+        "find": "allow",
+        "ls": "allow",
+        "write": "allow",
+        "edit": "allow",
         "bash": {
           "*": "allow",
-          "git*": "deny", "gh*": "deny",
-          "sudo*": "deny", "su": "deny", "su *": "deny", "doas*": "deny", "pkexec*": "deny",
-          "pip*": "deny", "* -m pip*": "deny", "* -m venv*": "deny", "virtualenv*": "deny",
-          "conda*": "deny", "mamba*": "deny", "micromamba*": "deny", "uv*": "deny", "poetry*": "deny", "pipenv*": "deny",
-          "brew*": "deny", "apt*": "deny", "apt-get*": "deny", "dnf*": "deny", "yum*": "deny", "pacman*": "deny", "port install*": "deny",
-          "npm install*": "deny", "npm i": "deny", "npm i *": "deny", "npm ci*": "deny", "npm update*": "deny", "npm uninstall*": "deny", "npm exec*": "deny", "npx*": "deny",
-          "pnpm add*": "deny", "pnpm install*": "deny", "pnpm update*": "deny", "pnpm remove*": "deny", "pnpm dlx*": "deny",
-          "yarn add*": "deny", "yarn install*": "deny", "yarn remove*": "deny", "yarn dlx*": "deny",
-          "docker*": "deny", "podman*": "deny", "ssh*": "deny", "scp*": "deny", "sftp*": "deny"
+          "git*": "deny",
+          "gh*": "deny",
+          "sudo*": "deny",
+          "su": "deny",
+          "su *": "deny",
+          "doas*": "deny",
+          "pkexec*": "deny",
+          "pip*": "deny",
+          "* -m pip*": "deny",
+          "* -m venv*": "deny",
+          "virtualenv*": "deny",
+          "conda*": "deny",
+          "mamba*": "deny",
+          "micromamba*": "deny",
+          "uv*": "deny",
+          "poetry*": "deny",
+          "pipenv*": "deny",
+          "brew*": "deny",
+          "apt*": "deny",
+          "apt-get*": "deny",
+          "dnf*": "deny",
+          "yum*": "deny",
+          "pacman*": "deny",
+          "port install*": "deny",
+          "npm install*": "deny",
+          "npm i": "deny",
+          "npm i *": "deny",
+          "npm ci*": "deny",
+          "npm update*": "deny",
+          "npm uninstall*": "deny",
+          "npm exec*": "deny",
+          "npx*": "deny",
+          "pnpm add*": "deny",
+          "pnpm install*": "deny",
+          "pnpm update*": "deny",
+          "pnpm remove*": "deny",
+          "pnpm dlx*": "deny",
+          "yarn add*": "deny",
+          "yarn install*": "deny",
+          "yarn remove*": "deny",
+          "yarn dlx*": "deny",
+          "docker*": "deny",
+          "podman*": "deny",
+          "ssh*": "deny",
+          "scp*": "deny",
+          "sftp*": "deny"
         },
-        "web_search": "allow", "tool": {"*": "ask", "web_enable": "allow", "tool_search": "allow"}, "skill": "allow"
+        "web_search": "allow",
+        "tool": {
+          "*": "ask",
+          "web_enable": "allow",
+          "tool_search": "allow",
+          "get_search_content": "allow"
+        },
+        "skill": "allow"
       },
-      "hideTools": ["show_plan", "powershell", "codemode"]
+      "hideTools": [
+        "show_plan",
+        "powershell",
+        "codemode"
+      ]
     },
     "yolo": {
       "label": "YOLO — isolated container only",
@@ -164,12 +530,23 @@
       "systemPrompt": "",
       "injectSandboxInfo": false,
       "bypassProtectedPaths": true,
-      "sandbox": {"enabled": false, "writable": true},
+      "sandbox": {
+        "enabled": false,
+        "writable": true
+      },
       "permission": {
-        "path": "allow", "external_directory": "allow",
-        "read": "allow", "grep": "allow", "find": "allow", "ls": "allow",
-        "write": "allow", "edit": "allow", "bash": "allow",
-        "web_search": "allow", "tool": "allow", "skill": "allow"
+        "path": "allow",
+        "external_directory": "allow",
+        "read": "allow",
+        "grep": "allow",
+        "find": "allow",
+        "ls": "allow",
+        "write": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "web_search": "allow",
+        "tool": "allow",
+        "skill": "allow"
       },
       "hideTools": []
     }
