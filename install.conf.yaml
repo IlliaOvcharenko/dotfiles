@@ -25,8 +25,8 @@
     ~/.pi/agent/web-search.json:
       path: pi/agent/web-search.json
       create: true
-    ~/.pi/agent/permission-mode/permission-mode.json:
-      path: pi/agent/permission-mode/permission-mode.json
+    ~/.pi/agent/pi-permission/config.json:
+      path: pi/agent/pi-permission/config.json
       create: true
     ~/.config/ranger/rc.conf: ranger/rc.conf
     ~/.config/ranger/plugins/nvim.py:
