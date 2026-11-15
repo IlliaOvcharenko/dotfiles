@@ -1,4 +1,4 @@
-"""Send ranger's editor actions to Neovim in the same tmux window."""
+"""Send ranger's editor actions to Neovim in the same tmux or Rex window."""
 
 import json
 import os
@@ -35,33 +35,69 @@ def read_reply(result):
     return None
 
 
+def editor_panes():
+    """Yield (pane ID, RPC address, ownership environment variable)."""
+    pane = os.environ.get("TMUX_PANE")
+    if os.environ.get("TMUX") and pane:
+        # Prefer the inner multiplexer when tmux itself runs inside Rex.
+        panes = run_command([
+            "tmux", "list-panes", "-t", pane, "-F",
+            "#{pane_id}\t#{@nvim_server}",
+        ])
+        for line in (panes or "").splitlines():
+            target, separator, address = line.partition("\t")
+            if separator and address and target != pane:
+                yield target, address, "TMUX_PANE"
+        return
+
+    session = os.environ.get("REX_SESSION")
+    pane = os.environ.get("REX_BLOCK")
+    if not session or not pane:
+        return
+    result = run_command(["rex", "block", "ls", "-s", session, "--json"])
+    try:
+        blocks = json.loads(result or "{}").get("blocks", [])
+        own = next((block for block in blocks if block["block_id"] == pane), None)
+        if not own or not own.get("window_id"):
+            return
+        for block in blocks:
+            target = block["block_id"]
+            if (target == pane or block.get("label") != "editor"
+                    or block.get("window_id") != own["window_id"]
+                    or block.get("host_id") != own.get("host_id")):
+                continue
+            # IDs are used as filenames only after rejecting path separators.
+            key = target[6:]
+            if not target.startswith("block:") or not key or any(
+                    char not in "0123456789abcdef-" for char in key):
+                continue
+            path = os.path.expanduser("~/.cache/rex-nvim/%s.json" % key)
+            try:
+                with open(path, encoding="utf-8") as stream:
+                    server = json.load(stream)
+                if (server.get("session") == session and server.get("block") == target
+                        and isinstance(server.get("address"), str) and server["address"]):
+                    yield target, server["address"], "REX_BLOCK"
+            except (OSError, ValueError, AttributeError):
+                continue
+    except (ValueError, TypeError, KeyError, AttributeError):
+        return
+
+
 def open_in_nvim(files):
     """Return (handled, error); only an unavailable editor permits fallback."""
-    pane = os.environ.get("TMUX_PANE")
-    if not os.environ.get("TMUX") or not pane or not files:
+    if not files:
         return False, None
 
-    # Query the window containing ranger's pane, rather than the active window.
-    panes = run_command([
-        "tmux", "list-panes", "-t", pane, "-F",
-        "#{pane_id}\t#{@nvim_server}",
-    ])
-    if panes is None:
-        return False, None
-
-    # tmux returns panes in index order: the first reachable editor wins.
-    for line in panes.splitlines():
-        target, separator, address = line.partition("\t")
-        if not separator or not address or target == pane:
-            continue
-
+    for target, address, owner_variable in editor_panes():
         client = ["nvim", "--headless", "--server", address, "--remote-expr"]
         # Pass paths as data, not Ex commands or simulated keystrokes. Also check
         # ownership so stale metadata cannot send files to a different pane.
-        payload = json.dumps([target, [os.path.abspath(path) for path in files]])
+        payload = json.dumps([owner_variable, target,
+                              [os.path.abspath(path) for path in files]])
         lua = (
-            "local pane, paths = unpack(_A); "
-            "if vim.env.TMUX_PANE ~= pane then "
+            "local owner_variable, pane, paths = unpack(_A); "
+            "if vim.env[owner_variable] ~= pane then "
             "return vim.fn.json_encode({available = false}) end; "
             "local ok, err = pcall(function() "
             "local buffers = {}; "

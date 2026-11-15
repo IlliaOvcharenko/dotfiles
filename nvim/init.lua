@@ -31,6 +31,45 @@ if vim.env.TMUX and vim.env.TMUX_PANE then
     })
 end
 
+-- Publish the RPC address for ranger; Rex's editor label selects the pane.
+-- Use the same explicit cache path in ranger, independent of XDG settings.
+if vim.env.REX_SESSION and vim.env.REX_BLOCK and not vim.env.TMUX then
+    local block = vim.env.REX_BLOCK
+    local key = block:match("^block:([0-9a-f%-]+)$")
+    if key then
+        local directory = vim.fn.expand("~/.cache/rex-nvim")
+        local path = directory .. "/" .. key .. ".json"
+        local function register_rex_server()
+            if vim.v.servername == "" then return end
+            vim.fn.mkdir(directory, "p", 448) -- 0700 for a new directory
+            local temporary = path .. "." .. vim.fn.getpid()
+            local record = vim.fn.json_encode({
+                session = vim.env.REX_SESSION,
+                block = block,
+                address = vim.v.servername,
+            })
+            if vim.fn.writefile({ record }, temporary) == 0 then
+                if vim.fn.rename(temporary, path) ~= 0 then
+                    vim.fn.delete(temporary)
+                end
+            end
+        end
+        vim.api.nvim_create_autocmd({ "VimEnter", "VimResume" }, {
+            callback = register_rex_server,
+        })
+        vim.api.nvim_create_autocmd("VimLeavePre", {
+            callback = function()
+                local ok, lines = pcall(vim.fn.readfile, path)
+                if not ok then return end
+                local decoded, record = pcall(vim.fn.json_decode, table.concat(lines, "\n"))
+                if decoded and type(record) == "table" and record.address == vim.v.servername then
+                    vim.fn.delete(path)
+                end
+            end,
+        })
+    end
+end
+
 require "plugins"
 
 vim.lsp.config('pyright', {})
@@ -136,11 +175,52 @@ vim.api.nvim_create_user_command("Wqa", [[:wqa<CR>]], {})
 
 
 function run_tmux_last_cmd()
-    vim.cmd [[
-        write
-        silent execute ':!tmux send-keys -t top-right Up  Enter'
-        redraw!
-    ]]
+    if vim.env.REX_SESSION then
+        if not vim.env.REX_BLOCK then
+            vim.notify("Cannot identify Neovim's Rex pane", vim.log.levels.WARN)
+            return
+        end
+        if vim.fn.executable("rex") ~= 1 then
+            vim.notify("Rex CLI is not available", vim.log.levels.ERROR)
+            return
+        end
+
+        -- Check on every invocation so pane-label shortcuts take effect immediately.
+        local output = vim.fn.system({
+            "rex", "block", "inspect", "-s", vim.env.REX_SESSION,
+            vim.env.REX_BLOCK, "--json",
+        })
+        if vim.v.shell_error ~= 0 then
+            vim.notify("Cannot inspect Rex pane: " .. output, vim.log.levels.ERROR)
+            return
+        end
+        local ok, info = pcall(vim.json.decode, output)
+        if not ok or type(info) ~= "table" or type(info.block) ~= "table" then
+            vim.notify("Invalid Rex pane inspection response", vim.log.levels.ERROR)
+            return
+        end
+        if info.block.label ~= "editor" then
+            vim.notify("Label this Rex pane 'editor' first (Ctrl+B, then E)", vim.log.levels.WARN)
+            return
+        end
+
+        vim.cmd("write")
+        output = vim.fn.system({
+            "rex", "send-key", "-s", vim.env.REX_SESSION,
+            "-b", "runner", "up", "enter",
+        })
+        if vim.v.shell_error ~= 0 then
+            vim.notify("Cannot rerun command in Rex runner: " .. output, vim.log.levels.ERROR)
+        end
+    elseif vim.env.TMUX then
+        vim.cmd [[
+            write
+            silent execute ':!tmux send-keys -t top-right Up  Enter'
+            redraw!
+        ]]
+    else
+        vim.notify("Not running inside Rex or tmux", vim.log.levels.WARN)
+    end
 end
 
 

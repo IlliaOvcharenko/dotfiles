@@ -10,6 +10,7 @@
 
 - link:
     ~/.config/nvim: nvim
+    ~/.config/rex/init.lua: rex/init.lua
     ~/.vim: vim/vim
     ~/.vimrc: vim/vimrc
     ~/.tmux.conf: tmux/tmux.conf
