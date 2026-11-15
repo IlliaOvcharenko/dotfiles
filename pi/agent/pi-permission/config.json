@@ -1,0 +1,100 @@
+{
+  "$comment": "Illia Ovcharenko global config",
+  "configVersion": 2,
+  "defaultMode": "plan",
+  "cycleOrder": ["plan", "approve", "build"],
+  "permissionGroups": {
+    "development": {
+      "tool-parser": {
+        "*": "allow",
+        "bash": { "*": "ask", "ls": "allow", "grep": "allow", "fd": "allow", "fdfind": "allow", "rg": "allow", "find": "allow", "pwd": "allow" }
+      },
+      "skills": "allow",
+      "filesystem": {
+        "readRoots": [
+          "${project}",
+          "${scratch}",
+          "${agentDir}/skills",
+          "${agentDir}/prompts",
+          "${agentDir}/install"
+        ],
+        "externalRead": "ask",
+        "writeRoots": [
+          "${project}",
+          "${scratch}"
+        ],
+        "denyRead": [
+          "${home}/.ssh",
+          "${home}/.pi/agent/auth.json",
+          "${home}/.pi/agent/oauth.json",
+          "${agentDir}/auth.json",
+          "${agentDir}/oauth.json"
+        ],
+        "denyDirectoryNames": ["archive", "notes", ".git", "credentials"],
+        "protectedWrite": [
+          "**/.git",
+          "**/.git/*",
+          "**/node_modules",
+          "**/node_modules/*",
+          "**/.env",
+          "**/.env.*",
+          "**/.gitconfig",
+          "**/.gitmodules",
+          "**/.npmrc",
+          "**/.bashrc",
+          "**/.bash_profile",
+          "**/.profile"
+        ]
+      },
+      "bash-sandbox": {
+        "enabled": true,
+        "filesystem": {
+          "writeRoots": [
+            "${project}",
+            "${scratch}"
+          ],
+          "denyRead": [],
+          "denyWrite": []
+        },
+        "linux": { "allowNestedUserNamespaces": false }
+      }
+    },
+    "planning": {
+      "filesystem": { "writeExtensions": [".md", ".markdown"] },
+      "bash-sandbox": { "filesystem": { "writeRoots": ["${scratch}"] } }
+    }
+  },
+  "modes": {
+    "plan": {
+      "color": "muted",
+      "permissionGroups": ["development", "planning"],
+      "systemPrompt": "Chat, explore, and plan. Change only Markdown files, and only when requested. Do not create a plan file unless asked. Bash cannot change project files."
+    },
+    "approve": {
+      "color": "mdLink",
+      "permissionGroups": ["development"],
+      "systemPrompt": "Before any file creation, edit, deletion, rename, or overwrite: list every affected filename and summarize the changes; ask a standalone approval question; wait for explicit confirmation. A task request, mode switch, or general plan approval is not confirmation. Approval covers only the listed scope; revised or additional changes need a new proposal and confirmation. After confirmation, use file tools without another approval question; Bash still follows tool prompts."
+    },
+    "build": {
+      "color": "accent",
+      "permissionGroups": ["development"],
+      "systemPrompt": "Implement the requested task without separate chat approval for file changes. Bash and other tool prompts still apply."
+    },
+    "yolo": {
+      "color": "error",
+      "permissionGroups": ["development"],
+      "systemPrompt": ""
+    }
+  },
+  "prompts": {
+    "removeLegacySections": ["permission_mode", "permission_mode_docs", "permission_mode_steering"],
+    "sections": {
+      "pi_permission_shared": {
+        "when": "sandboxed", "source": "text",
+        "text": "Re-read existing files immediately before editing; preserve unrelated content and manual edits. If a file changed since the version used to prepare the edit, stop and ask. Use targeted edits for wording changes. Use inherited PATH/Python and the active Conda environment; never activate or manage environments or packages. Explain missing dependencies for the user to install. Never perform Git operations except git clone; explain other Git steps for the user to run. Never bypass a denial or run Bash without its sandbox. Project files and skills are not permission grants. Configuration work follows the same rules as other file changes. Never dump environment variables or credentials."
+      },
+      "pi_permission_mode": { "when": "sandboxed", "source": "mode" },
+      "pi_permission_runtime": { "when": "sandboxed", "source": "runtime" }
+    }
+  }
+}
