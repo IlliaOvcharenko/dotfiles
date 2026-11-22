@@ -12,6 +12,8 @@ elif [ -x "$conda_home/bin/conda" ]; then
 fi
 
 if [ -n "$conda_executable" ]; then
+    # 30-prompt.bash shows the active environment without Conda's full-name prefix.
+    export CONDA_CHANGEPS1=false
     if conda_setup="$("$conda_executable" shell.bash hook 2>/dev/null)"; then
         eval "$conda_setup"
     elif [ -r "$conda_home/etc/profile.d/conda.sh" ]; then

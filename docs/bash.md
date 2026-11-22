@@ -42,6 +42,11 @@ The numeric filename prefixes make dependencies explicit. For example,
 `path_prepend` is defined by `10-env.bash` before any platform or tool fragment
 uses it.
 
+## Prompt indicators
+
+- **Vi mode:** `[I]` is insert mode (soft pink) and `[N]` is normal mode (sky blue). Press `Esc` to enter normal mode and `i` to return to insert mode. The labels require a newer Bash than the one bundled with macOS.
+- **Conda environment:** When an environment is active, its name appears in mint green before your username. Names longer than four characters are shortened with `..` (`research` → `rese..`); `base` stays `base`. The tag disappears when no environment is active.
+
 ## Different OS
 
 Platform fragments check `OSTYPE` and return without making changes on the
