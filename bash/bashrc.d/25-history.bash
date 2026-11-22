@@ -23,67 +23,60 @@ _dotfiles_switch_history() {
 }
 
 bash-enable-project-history() {
-    local cwd home project_cwd logical_home relative root target previous previous_exported=0
+    _dotfiles_enable_project_history
+}
+
+_dotfiles_enable_project_history() {
+    local start_dir=${1:-} cwd target previous previous_exported=0
 
     if [[ -n ${_dotfiles_global_history_file:-} ]]; then
-        printf 'Project history is already enabled: %s\nRun bash-disable-project-history before enabling another project.\n' \
+        [[ -n $start_dir ]] || printf 'Project history is already enabled: %s\nRun bash-disable-project-history before enabling another project.\n' \
             "${HISTFILE:-(unset)}" >&2
         return 1
     fi
     if [[ -z ${HISTFILE:-} || ! -o history ]]; then
-        printf 'Enable Bash history and set HISTFILE before switching history.\n' >&2
+        [[ -n $start_dir ]] || printf 'Enable Bash history and set HISTFILE before switching history.\n' >&2
         return 1
     fi
 
     cwd=$(builtin pwd -P) || return 1
-    home=$(builtin cd -P -- "$HOME" && builtin pwd -P) || return 1
-    home=${home%/}
-    project_cwd=$cwd
-    case $project_cwd in
-        "$home"/work/*|"$home"/notwork/*) ;;
-        *)
-            # A symlink under an allowed root can point outside the home directory.
-            project_cwd=$(builtin pwd -L) || return 1
-            logical_home=${HOME%/}
-            case $project_cwd in
-                "$home"/work/*|"$home"/notwork/*) ;;
-                "$logical_home"/work/*|"$logical_home"/notwork/*) home=$logical_home ;;
-                *)
-                    printf 'Run bash-enable-project-history from a project under ~/work or ~/notwork.\n' >&2
-                    return 1
-                    ;;
-            esac
-            ;;
-    esac
+    target=${start_dir:-$cwd}
+    target=${target%/}/.bash_history
+    previous=$HISTFILE
+    [[ $previous = /* ]] || previous=${cwd%/}/$previous
 
-    # The first directory beneath work/notwork is the project, even from a subfolder.
-    relative=${project_cwd#"$home"/}
-    root=${relative%%/*}
-    relative=${relative#*/}
-    target=$home/$root/${relative%%/*}/.bash_history
+    if [[ $previous == "$target" || $previous -ef $target ]]; then
+        [[ -n $start_dir ]] || printf 'This folder already uses your active history file: %s\n' "$target" >&2
+        return 1
+    fi
 
-    if [[ ! -e $target && ! -L $target ]]; then
+    if [[ -z $start_dir && ! -e $target && ! -L $target ]]; then
         # Noclobber lets another shell create the file first without truncating it.
         (umask 077; set -o noclobber; : > "$target") 2>/dev/null || :
     fi
     if [[ -L $target || ! -f $target || ! -O $target || ! -r $target || ! -w $target ]]; then
-        printf 'Cannot use project history file: %s\n' "$target" >&2
+        [[ -n $start_dir ]] || printf 'Cannot use project history file: %s\n' "$target" >&2
         return 1
     fi
 
-    if [[ $HISTFILE != "$target" && ! $HISTFILE -ef $target ]]; then
-        previous=$HISTFILE
-        [[ $previous = /* ]] || previous=$cwd/$previous
-        case $(declare -p HISTFILE) in
-            'declare -'*x*' HISTFILE='*) previous_exported=1 ;;
-        esac
+    case $(declare -p HISTFILE) in
+        'declare -'*x*' HISTFILE='*) previous_exported=1 ;;
+    esac
+    if [[ -n $start_dir ]]; then
+        # Bash loads its initial history after reading the startup files.
+        HISTFILE=$target || return 1
+    else
         _dotfiles_switch_history "$target" || return 1
-        _dotfiles_global_history_file=$previous
-        _dotfiles_global_history_exported=$previous_exported
-        # The project setting is an opt-in for this shell, not its children.
-        export -n HISTFILE
     fi
-    printf 'Project history: %s\n' "$HISTFILE"
+    _dotfiles_global_history_file=$previous
+    _dotfiles_global_history_exported=$previous_exported
+    # Child shells select history independently at startup.
+    export -n HISTFILE
+    if [[ -n $start_dir ]]; then
+        printf 'Project history enabled: %s\n' "$HISTFILE"
+    else
+        printf 'Project history: %s\n' "$HISTFILE"
+    fi
 }
 
 bash-disable-project-history() {

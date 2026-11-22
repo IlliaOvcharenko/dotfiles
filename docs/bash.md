@@ -37,7 +37,8 @@ Dotbot creates these links:
 2. `~/.bash_profile` sources `~/.bashrc`.
 3. `~/.bashrc` returns immediately when the shell is not interactive.
 4. Every readable `~/.bashrc.d/*.bash` file is sourced in filename order.
-5. `~/.bashrc.local` is sourced last when it exists.
+5. `~/.bashrc.local` is sourced when it exists.
+6. Bash checks the starting directory for project history.
 
 The numeric filename prefixes make dependencies explicit. For example,
 `path_prepend` is defined by `10-env.bash` before any platform or tool fragment
@@ -52,9 +53,8 @@ uses it.
 
 ### Opt-in project history
 
-- Bash starts with global history. Run `bash-enable-project-history` from anywhere inside a project under `~/work` or `~/notwork`. It switches the current shell without starting a new one.
-- The first folder under either root is the project: `~/work/payments/src` uses `~/work/payments/.bash_history`. Each pane opts in separately; panes that select the same project share its history.
-- If a symlink leads outside these roots, enter through the path under `~/work` or `~/notwork`. Bash uses that logical path when the physical path is outside both roots.
+- If an interactive Bash shell starts in a folder with an existing, usable `.bash_history` separate from the global file, it prints `Project history enabled: <path>` and uses that file. Otherwise, it stays on global history without a message. The check doesn't look in parent folders or create a file.
+- Run `bash-enable-project-history` to switch the current shell to the current folder's `.bash_history` manually. This can create the file. A symlink to a directory and its destination use the same history file.
 - Changing directories does not switch history. Only one project history can be active per shell. Run `bash-disable-project-history` to return to global history before enabling another project.
 - New project history files are created with owner-only permissions. If the project is a Git repo, exclude `/.bash_history` from Git so it isn't accidentally committed.
 

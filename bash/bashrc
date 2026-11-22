@@ -4,6 +4,11 @@ case $- in
     *) return ;;
 esac
 
+if [[ -z ${_dotfiles_bashrc_loaded:-} ]]; then
+    _dotfiles_bashrc_loaded=1
+    _dotfiles_history_start_dir=$(builtin pwd -P) || _dotfiles_history_start_dir=
+fi
+
 set -o vi
 
 bashrc_fragment_dir="$HOME/.bashrc.d"
@@ -18,3 +23,9 @@ unset bashrc_fragment bashrc_fragment_dir
 
 # Local configuration is intentionally not managed by Dotbot.
 [ -r "$HOME/.bashrc.local" ] && . "$HOME/.bashrc.local"
+
+# Check the starting directory once, after local HISTFILE overrides are in place.
+if [[ -n ${_dotfiles_history_start_dir:-} ]] && declare -F _dotfiles_enable_project_history >/dev/null; then
+    _dotfiles_enable_project_history "$_dotfiles_history_start_dir" || :
+fi
+unset _dotfiles_history_start_dir
