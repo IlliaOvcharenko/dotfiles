@@ -23,7 +23,7 @@ _dotfiles_switch_history() {
 }
 
 bash-enable-project-history() {
-    local cwd home relative root target previous previous_exported=0
+    local cwd home project_cwd logical_home relative root target previous previous_exported=0
 
     if [[ -n ${_dotfiles_global_history_file:-} ]]; then
         printf 'Project history is already enabled: %s\nRun bash-disable-project-history before enabling another project.\n' \
@@ -38,16 +38,26 @@ bash-enable-project-history() {
     cwd=$(builtin pwd -P) || return 1
     home=$(builtin cd -P -- "$HOME" && builtin pwd -P) || return 1
     home=${home%/}
-    case $cwd in
+    project_cwd=$cwd
+    case $project_cwd in
         "$home"/work/*|"$home"/notwork/*) ;;
         *)
-            printf 'Run bash-enable-project-history from a project under ~/work or ~/notwork.\n' >&2
-            return 1
+            # A symlink under an allowed root can point outside the home directory.
+            project_cwd=$(builtin pwd -L) || return 1
+            logical_home=${HOME%/}
+            case $project_cwd in
+                "$home"/work/*|"$home"/notwork/*) ;;
+                "$logical_home"/work/*|"$logical_home"/notwork/*) home=$logical_home ;;
+                *)
+                    printf 'Run bash-enable-project-history from a project under ~/work or ~/notwork.\n' >&2
+                    return 1
+                    ;;
+            esac
             ;;
     esac
 
     # The first directory beneath work/notwork is the project, even from a subfolder.
-    relative=${cwd#"$home"/}
+    relative=${project_cwd#"$home"/}
     root=${relative%%/*}
     relative=${relative#*/}
     target=$home/$root/${relative%%/*}/.bash_history

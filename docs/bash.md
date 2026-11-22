@@ -54,6 +54,7 @@ uses it.
 
 - Bash starts with global history. Run `bash-enable-project-history` from anywhere inside a project under `~/work` or `~/notwork`. It switches the current shell without starting a new one.
 - The first folder under either root is the project: `~/work/payments/src` uses `~/work/payments/.bash_history`. Each pane opts in separately; panes that select the same project share its history.
+- If a symlink leads outside these roots, enter through the path under `~/work` or `~/notwork`. Bash uses that logical path when the physical path is outside both roots.
 - Changing directories does not switch history. Only one project history can be active per shell. Run `bash-disable-project-history` to return to global history before enabling another project.
 - New project history files are created with owner-only permissions. If the project is a Git repo, exclude `/.bash_history` from Git so it isn't accidentally committed.
 
