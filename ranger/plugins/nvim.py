@@ -50,46 +50,56 @@ def editor_panes():
                 yield target, address, "TMUX_PANE"
         return
 
-    session = os.environ.get("REX_SESSION")
     pane = os.environ.get("REX_BLOCK")
-    if not session or not pane:
-        return
-    result = run_command(["rex", "block", "ls", "-s", session, "--json"])
+    if pane:
+        yield from rex_editor_sockets(rex_editor_blocks(pane) or ())
+
+
+def rex_editor_blocks(pane):
+    """Return editor IDs in pane's tab, or None if discovery failed."""
+    # Rex resolves a full block ID to the session that currently contains it.
+    result = run_command(["rex", "block", "ls", "-s", pane, "--json"])
     try:
         blocks = json.loads(result or "{}").get("blocks", [])
         own = next((block for block in blocks if block["block_id"] == pane), None)
         if not own or not own.get("window_id"):
-            return
-        for block in blocks:
-            target = block["block_id"]
-            if (target == pane or block.get("label") != "editor"
-                    or block.get("window_id") != own["window_id"]
-                    or block.get("host_id") != own.get("host_id")):
-                continue
-            # IDs are used as filenames only after rejecting path separators.
-            key = target[6:]
-            if not target.startswith("block:") or not key or any(
-                    char not in "0123456789abcdef-" for char in key):
-                continue
-            path = os.path.expanduser("~/.cache/rex-nvim/%s.json" % key)
-            try:
-                with open(path, encoding="utf-8") as stream:
-                    server = json.load(stream)
-                if (server.get("session") == session and server.get("block") == target
-                        and isinstance(server.get("address"), str) and server["address"]):
-                    yield target, server["address"], "REX_BLOCK"
-            except (OSError, ValueError, AttributeError):
-                continue
+            return None
+        return [block["block_id"] for block in blocks
+                if block["block_id"] != pane and block.get("label") == "editor"
+                and block.get("window_id") == own["window_id"]
+                and block.get("host_id") == own.get("host_id")]
     except (ValueError, TypeError, KeyError, AttributeError):
-        return
+        return None
 
 
-def open_in_nvim(files):
+def rex_editor_sockets(targets):
+    """Yield RPC candidates for editor blocks already scoped to the current tab."""
+    for target in targets:
+        # IDs are used as filenames only after rejecting path separators.
+        if not isinstance(target, str) or not target.startswith("block:"):
+            continue
+        key = target[6:]
+        if not key or any(char not in "0123456789abcdef-" for char in key):
+            continue
+        path = os.path.expanduser("~/.cache/rex-nvim/%s.json" % key)
+        try:
+            with open(path, encoding="utf-8") as stream:
+                server = json.load(stream)
+            if (server.get("block") == target
+                    and isinstance(server.get("address"), str) and server["address"]):
+                yield target, server["address"], "REX_BLOCK"
+        except (OSError, ValueError, AttributeError):
+            continue
+
+
+def open_in_nvim(files, candidates=None):
     """Return (handled, error); only an unavailable editor permits fallback."""
     if not files:
         return False, None
 
-    for target, address, owner_variable in editor_panes():
+    if candidates is None:
+        candidates = editor_panes()
+    for target, address, owner_variable in candidates:
         client = ["nvim", "--headless", "--server", address, "--remote-expr"]
         # Pass paths as data, not Ex commands or simulated keystrokes. Also check
         # ownership so stale metadata cannot send files to a different pane.

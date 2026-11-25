@@ -33,7 +33,7 @@ end
 
 -- Publish the RPC address for ranger; Rex's editor label selects the pane.
 -- Use the same explicit cache path in ranger, independent of XDG settings.
-if vim.env.REX_SESSION and vim.env.REX_BLOCK and not vim.env.TMUX then
+if vim.env.REX_BLOCK and not vim.env.TMUX then
     local block = vim.env.REX_BLOCK
     local key = block:match("^block:([0-9a-f%-]+)$")
     if key then
@@ -44,7 +44,6 @@ if vim.env.REX_SESSION and vim.env.REX_BLOCK and not vim.env.TMUX then
             vim.fn.mkdir(directory, "p", 448) -- 0700 for a new directory
             local temporary = path .. "." .. vim.fn.getpid()
             local record = vim.fn.json_encode({
-                session = vim.env.REX_SESSION,
                 block = block,
                 address = vim.v.servername,
             })
@@ -175,21 +174,15 @@ vim.api.nvim_create_user_command("Wqa", [[:wqa<CR>]], {})
 
 
 function run_tmux_last_cmd()
-    if vim.env.REX_SESSION then
-        if not vim.env.REX_BLOCK then
-            vim.notify("Cannot identify Neovim's Rex pane", vim.log.levels.WARN)
-            return
-        end
+    local pane = vim.env.REX_BLOCK
+    if pane then
         if vim.fn.executable("rex") ~= 1 then
             vim.notify("Rex CLI is not available", vim.log.levels.ERROR)
             return
         end
 
         -- Check on every invocation so pane-label shortcuts take effect immediately.
-        local output = vim.fn.system({
-            "rex", "block", "inspect", "-s", vim.env.REX_SESSION,
-            vim.env.REX_BLOCK, "--json",
-        })
+        local output = vim.fn.system({ "rex", "block", "inspect", "-s", pane, pane, "--json" })
         if vim.v.shell_error ~= 0 then
             vim.notify("Cannot inspect Rex pane: " .. output, vim.log.levels.ERROR)
             return
@@ -206,7 +199,7 @@ function run_tmux_last_cmd()
 
         vim.cmd("write")
         output = vim.fn.system({
-            "rex", "send-key", "-s", vim.env.REX_SESSION,
+            "rex", "send-key", "-s", pane,
             "-b", "runner", "up", "enter",
         })
         if vim.v.shell_error ~= 0 then

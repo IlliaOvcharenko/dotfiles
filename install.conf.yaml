@@ -30,9 +30,11 @@
       path: pi/agent/pi-permission/config.json
       create: true
     ~/.config/ranger/rc.conf: ranger/rc.conf
-    ~/.config/ranger/plugins/nvim.py:
-      path: ranger/plugins/nvim.py
+    ~/.config/ranger/plugins:
+      path: ranger/plugins
       create: true
+
+    # SublimeText 
     "~/Library/Application Support/Sublime Text/Packages/User/Preferences.sublime-settings":
       path: sublime/User/Preferences.sublime-settings
       create: true
