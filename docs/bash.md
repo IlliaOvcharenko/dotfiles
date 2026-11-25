@@ -46,10 +46,10 @@ uses it.
 
 ## Shared command history
 
-- Bash keeps up to 50,000 commands in memory and 100,000 lines in the history file. Shells append to the file rather than overwriting it on exit.
-- Terminals and tmux panes using the same `HISTFILE` share history. At each prompt, Bash saves new commands and reloads the history file. Press Enter in an idle pane to refresh its history.
+- Bash keeps up to 50,000 commands in memory and 100,000 lines in the history file. It appends pending commands on normal shell exit, not at each prompt.
+- Terminals and tmux panes using the same `HISTFILE` share history. Run `bash-history-sync` to save pending commands and reload entries that other shells have already written to the file.
 - Run `bash-history-status` to see the mode, recording state, active file, commands in memory, and lines on disk without printing the commands themselves. Disk lines are not a command count: timestamps and multiline commands can use extra lines.
-- In existing Bash sessions, run `source ~/.bashrc.d/25-history.bash` before closing them so they don't exit with the old history settings.
+- Start a new Bash session to switch from per-prompt syncing. Re-sourcing the config does not remove the old prompt hook from an existing session.
 
 ### Opt-in project history
 

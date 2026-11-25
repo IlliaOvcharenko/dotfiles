@@ -121,39 +121,21 @@ bash-history-status() {
         "$mode" "$recording" "${file:-(unset)}" "$entries" "$disk_lines"
 }
 
-_dotfiles_sync_history() {
-    local status=$?
-    if [[ -n ${HISTFILE:-} && -o history ]] && builtin history -a &&
-        [[ -f $HISTFILE && -r $HISTFILE ]]; then
-        # Incremental reads can skip other shells' entries after an append.
-        builtin history -c
-        builtin history -r
-    fi
-    return "$status"
-}
-
-_dotfiles_install_history_hook() {
-    local hook=_dotfiles_sync_history entry
-
-    # Bash 5.1+ runs each element of an indexed PROMPT_COMMAND array.
-    if (( BASH_VERSINFO[0] > 5 || (BASH_VERSINFO[0] == 5 && BASH_VERSINFO[1] >= 1) )); then
-        case $(declare -p PROMPT_COMMAND 2>/dev/null) in
-            'declare -'*a*' PROMPT_COMMAND='*)
-                for entry in "${PROMPT_COMMAND[@]}"; do
-                    [ "$entry" = "$hook" ] && return 0
-                done
-                PROMPT_COMMAND+=("$hook")
-                return 0
-                ;;
-        esac
+# Bash appends pending history on exit via histappend; refresh on demand.
+bash-history-sync() {
+    if [[ -z ${HISTFILE:-} || ! -o history ]]; then
+        printf 'Enable Bash history and set HISTFILE before syncing history.\n' >&2
+        return 1
     fi
 
-    # Keep existing scalar hooks first, and don't add ours twice on re-source.
-    case $'\n'"${PROMPT_COMMAND-}"$'\n' in
-        *$'\n'"$hook"$'\n'*) ;;
-        *) PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}$hook" ;;
-    esac
-}
+    builtin history -a || return 1
+    [[ -e $HISTFILE || -L $HISTFILE ]] || return 0
+    if [[ ! -f $HISTFILE || ! -r $HISTFILE ]]; then
+        printf 'Cannot read history file: %s\n' "$HISTFILE" >&2
+        return 1
+    fi
 
-_dotfiles_install_history_hook
-unset -f _dotfiles_install_history_hook
+    # Incremental reads can skip other shells' entries after an append.
+    builtin history -c
+    builtin history -r
+}
