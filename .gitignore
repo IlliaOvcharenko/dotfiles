@@ -7,7 +7,9 @@ archive
 # AI
 # Pi Harness local settings
 .pi/
-pi/agent/model-overrides.local.json
+/pi/agent/model-metadata.local.json
+/pi/agent/compaction.local.json
+/pi/agent/settings.generated.json
 
 # AGENTS.md file
 AGENTS.md

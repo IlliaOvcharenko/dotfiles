@@ -1,4 +1,4 @@
-"""Merge shared and private overrides into Pi's local models.json."""
+"""Merge shared and private model metadata into Pi's local models.json."""
 
 import json
 import os
@@ -44,8 +44,12 @@ except FileNotFoundError:
 
 config = json.loads(original)
 source_dir = Path(__file__).parent
-apply_overrides(config, source_dir / "model-overrides.json")
-apply_overrides(config, source_dir / "model-overrides.local.json", optional=True)
+apply_overrides(config, source_dir / "model-metadata.json")
+local = source_dir / "model-metadata.local.json"
+if not local.exists():
+    # Keep older checkouts' private files working until they are renamed.
+    local = source_dir / "model-overrides.local.json"
+apply_overrides(config, local, optional=True)
 
 updated = json.dumps(config, indent=2, ensure_ascii=False) + "\n"
 if updated != original:

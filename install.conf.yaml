@@ -7,7 +7,8 @@
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
-  - [python3 pi/agent/apply-model-overrides.py, Applying Pi model overrides]
+  - [python3 pi/agent/apply-model-metadata.py, Applying Pi model metadata]
+  - [python3 pi/agent/render-settings.py, Applying Pi compaction settings]
 
 - link:
     ~/.config/nvim: nvim
@@ -22,8 +23,9 @@
       path: pi/dotfiles-skills
       create: true
     ~/.pi/agent/settings.json:
-      path: pi/agent/settings.json
+      path: pi/agent/settings.generated.json
       create: true
+      if: 'test -f pi/agent/settings.generated.json'
     ~/.pi/agent/web-search.json:
       path: pi/agent/web-search.json
       create: true
