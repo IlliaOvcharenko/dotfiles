@@ -7,6 +7,7 @@
 
 - shell:
   - [git submodule update --init --recursive, Installing submodules]
+  - [python3 pi/agent/apply-model-overrides.py, Applying Pi model overrides]
 
 - link:
     ~/.config/nvim: nvim

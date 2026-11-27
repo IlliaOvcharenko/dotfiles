@@ -5,7 +5,13 @@
   "compaction": {
     "enabled": true,
     "reserveTokens": 64644,
-    "keepRecentTokens": 4000
+    "keepRecentTokens": 4000,
+    "modelOverrides": {
+      "openai/gpt-6.1-sol": { "reserveTokens": 128000, "keepRecentTokens": 32000 },
+      "openai/gpt-6.1-terra": { "reserveTokens": 128000, "keepRecentTokens": 32000 },
+      "openai/gpt-6.2-sol": { "reserveTokens": 128000, "keepRecentTokens": 32000 },
+      "openai/gpt-6.2-terra": { "reserveTokens": 128000, "keepRecentTokens": 32000 }
+    }
   },
   "packages": [
     "npm:pi-web-access",

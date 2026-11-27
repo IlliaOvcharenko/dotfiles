@@ -1,0 +1,13 @@
+{
+  "$schema": "https://pi.dev/schemas/models.schema.json",
+  "providers": {
+    "openai": {
+      "modelOverrides": {
+        "gpt-6.1-sol": { "contextWindow": 500000, "maxTokens": 65536 },
+        "gpt-6.1-terra": { "contextWindow": 500000, "maxTokens": 32768 },
+        "gpt-6.2-sol": { "contextWindow": 500000, "maxTokens": 65536 },
+        "gpt-6.2-terra": { "contextWindow": 500000, "maxTokens": 32768 }
+      }
+    }
+  }
+}
