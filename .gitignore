@@ -1,6 +1,16 @@
+# Archive
+archive
 
 # Apple
 .DS_Store
+
+# AI
+# Pi Harness local settings
+.pi/
+pi/agent/model-overrides.local.json
+
+# AGENTS.md file
+AGENTS.md
 
 # NVim Packer compiled
 nvim/plugin/packer_compiled.lua
@@ -14,4 +24,6 @@ vim/vim/*.swp
 vim/vim/*.swo
 vim/vim/.netrwhist
 
-
+# Python
+__pycache__
+__init__.py
